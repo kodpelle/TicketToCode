@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TicketToCode.Core.Models
 {
-    class Booking
+    public class Booking
     {
         //Primärnyckeln 
         public int Id { get; set; }
