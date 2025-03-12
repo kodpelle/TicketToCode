@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TicketToCode.Api.Endpoints;
 using TicketToCode.Api.Services;
 using TicketToCode.Core.Data;
@@ -5,6 +6,10 @@ using TicketToCode.Core.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//Gör att vi kan registrera ApplicationDBContext i DI-containern och konfigurea den att använda SQL med lokal databasfil "local.db"
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+    options.UseSqlite("Data Source=local.db"));
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 // Default mapping is /openapi/v1.json
 builder.Services.AddOpenApi();
