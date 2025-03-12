@@ -32,7 +32,7 @@ namespace TicketToCode
 
             app.MapStaticAssets();
             app.MapRazorComponents<App>()
-                .AddInteractiveServerRenderMode();
+            .AddInteractiveServerRenderMode();
 
             app.Run();
         }

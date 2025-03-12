@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketToCode.Api", "TicketT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketToCode.Core", "TicketToCode.Core\TicketToCode.Core.csproj", "{2972C6A3-9CC4-449E-BBB4-DE06BC8B5E9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketToCode", "TicketToCode\TicketToCode.csproj", "{2F7D345E-9E49-4A41-A2E3-D288731516B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketToCodeBlazor", "TicketToCodeBlazor\TicketToCodeBlazor.csproj", "{3F5CA711-BE3B-4F10-8FBB-05B8106EDDD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{2972C6A3-9CC4-449E-BBB4-DE06BC8B5E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2972C6A3-9CC4-449E-BBB4-DE06BC8B5E9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2972C6A3-9CC4-449E-BBB4-DE06BC8B5E9D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F7D345E-9E49-4A41-A2E3-D288731516B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F7D345E-9E49-4A41-A2E3-D288731516B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F7D345E-9E49-4A41-A2E3-D288731516B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F7D345E-9E49-4A41-A2E3-D288731516B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F5CA711-BE3B-4F10-8FBB-05B8106EDDD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F5CA711-BE3B-4F10-8FBB-05B8106EDDD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F5CA711-BE3B-4F10-8FBB-05B8106EDDD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F5CA711-BE3B-4F10-8FBB-05B8106EDDD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

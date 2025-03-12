@@ -1,6 +1,6 @@
 ﻿@page "/"
-@rendermode InteractiveServer
-@inject IHttpClientFactory HttpClientFactory
+
+@inject HttpClient HttpClient
 @inject NavigationManager Navigation
 
 <h3>Registrera ny användare</h3>
@@ -25,20 +25,21 @@
         }
         try
         {
-            var client = HttpClientFactory.CreateClient("ApiClient");
-
             var requestData = new
             {
                 Username = username,
                 Password = password
             };
 
-            var response = await client.PostAsJsonAsync("/auth/register", requestData);
+            var response = await HttpClient.PostAsJsonAsync("https://localhost:7206/auth/register", requestData);
 
             if (response.IsSuccessStatusCode)
             {
                 responseMessage = "Registrering lyckades!";
                 Navigation.NavigateTo("/login");
+                Console.WriteLine(HttpClient.BaseAddress);
+                Console.WriteLine(HttpClient.BaseAddress + "auth/register");
+
             }
             else
             {

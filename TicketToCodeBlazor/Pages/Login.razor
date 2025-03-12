@@ -1,13 +1,12 @@
-﻿@page "/"
-@rendermode InteractiveServer
-@inject IHttpClientFactory HttpClientFactory
+﻿@page "/login"
+@inject HttpClient HttpClient
 @inject NavigationManager Navigation
 
-<h3>Registrera ny användare</h3>
+<h3>Logga in</h3>
 
 <input @bind="username" placeholder="Användarnamn" />
 <input @bind="password" type="password" placeholder="Lösenord" />
-<button @onclick="RegisterUser">Registrera</button>
+<button @onclick="LoginUser">Logga in</button>
 
 <p>@responseMessage</p>
 
@@ -16,34 +15,33 @@
     private string password = "";
     private string responseMessage = "";
 
-    private async Task RegisterUser()
+    private async Task LoginUser()
     {
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         {
             responseMessage = "Användarnamn och lösenord får inte vara tomma!";
             return;
         }
+
         try
         {
-            var client = HttpClientFactory.CreateClient("ApiClient");
-
             var requestData = new
             {
                 Username = username,
                 Password = password
             };
 
-            var response = await client.PostAsJsonAsync("/auth/register", requestData);
+            var response = await HttpClient.PostAsJsonAsync("https://localhost:7206/auth/login", requestData);
 
             if (response.IsSuccessStatusCode)
             {
-                responseMessage = "Registrering lyckades!";
-                Navigation.NavigateTo("/login");
+                responseMessage = "Inloggning lyckades!";
+                Navigation.NavigateTo("/home");
             }
             else
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                responseMessage = $"Registrering misslyckades: {response.StatusCode} - {errorContent}";
+                responseMessage = $"Inloggning misslyckades: {response.StatusCode} - {errorContent}";
             }
         }
         catch (Exception ex)
