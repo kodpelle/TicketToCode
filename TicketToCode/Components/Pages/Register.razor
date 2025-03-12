@@ -1,0 +1,52 @@
+﻿@page "/register"
+@rendermode InteractiveServer
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>Registrera ny användare</h3>
+
+<input @bind="username" placeholder="Användarnamn" />
+<input @bind="password" type="password" placeholder="Lösenord" />
+<button @onclick="RegisterUser">Registrera</button>
+
+<p>@responseMessage</p>
+
+@code {
+    private string username = "";
+    private string password = "";
+    private string responseMessage = "";
+
+    private async Task RegisterUser()
+    {
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            responseMessage = "Användarnamn och lösenord får inte vara tomma!";
+            return;
+        }
+        try
+        {
+            var client = HttpClientFactory.CreateClient("ApiClient");
+
+            var requestData = new
+            {
+                Username = username,
+                Password = password
+            };
+
+            var response = await client.PostAsJsonAsync("/auth/register", requestData);
+
+            if (response.IsSuccessStatusCode)
+            {
+                responseMessage = "Registrering lyckades!";
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                responseMessage = $"Registrering misslyckades: {response.StatusCode} - {errorContent}";
+            }
+        }
+        catch (Exception ex)
+        {
+            responseMessage = $"Ett fel inträffade: {ex.Message}";
+        }
+    }
+}
