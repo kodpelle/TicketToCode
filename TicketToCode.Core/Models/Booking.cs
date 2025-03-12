@@ -23,5 +23,7 @@ namespace TicketToCode.Core.Models
         public int TicketCount { get; set; }
         public DateTime BookingDate { get; set; } = DateTime.UtcNow;
 
+        public Booking() { }
+
     }
 }
