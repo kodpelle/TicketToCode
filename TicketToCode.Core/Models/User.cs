@@ -8,12 +8,26 @@ public class User
     public string Role { get; set; } = UserRoles.User; // Default role
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public User(string name, string pwd)
+    //Måste ha parameterlös konstruktor för EF core 
+    private User() { }
+   
+    //Fabriksmetod för att skapa en användare vid registrering
+    public static User Create(string name, string pwdHash, string role = UserRoles.User)
     {
-        Username = name;
-        PasswordHash = pwd;
+        var user = new User
+        {
+            Username = name,
+            PasswordHash = pwdHash,
+            Role = role,
+            CreatedAt = DateTime.UtcNow
+        };
+        return user;
     }
 }
+
+
+
+
 
 // Static class to define roles
 public static class UserRoles
@@ -21,4 +35,4 @@ public static class UserRoles
     public const string Admin = "Admin";
     public const string User = "User";
 
-} 
+}
