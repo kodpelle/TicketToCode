@@ -11,7 +11,7 @@ public class User
     //Måste ha parameterlös konstruktor för EF core 
     private User() { }
    
-    //Fabriksmetod för att skapa en användare vid registrering eller inloggning
+    //Fabriksmetod för att skapa en användare vid registrering
     public static User Create(string name, string pwdHash, string role = UserRoles.User)
     {
         var user = new User
