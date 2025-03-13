@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-//Gör att vi kan registrera ApplicationDBContext i DI-containern och konfigurea den att använda SQL med lokal databasfil "local.db"
+//Gï¿½r att vi kan registrera ApplicationDBContext i DI-containern och konfigurea den att anvï¿½nda SQL med lokal databasfil "local.db"
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlite("Data Source=../TicketToCode.Core/local.db",
@@ -52,6 +52,18 @@ app.UseAuthorization();
 
 // Map all endpoints
 app.MapEndpoints<Program>();
+app.MapEndpoints<BookingEndpoints>();
+group.MapGet("/events/{eventId}/available-dates", async (int eventId, ApplicationDbContext db) =>
+{
+    var eventDates = await db.EventDates
+        .Where(e => e.EventId == eventId)
+        .Select(e => e.AvailableDate)
+        .ToListAsync();
+
+    return eventDates.Any() ? Results.Ok(eventDates) : Results.NotFound("Inga datum tillgÃ¤ngliga.");
+});
 
 app.Run();
+
+
 
