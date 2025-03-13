@@ -30,7 +30,7 @@ public class AuthService : IAuthService
             return null;
         }
 
-        return new User(user.Username, user.Role);
+        return user;
     }
 
     public User? Register(string username, string password)
@@ -40,7 +40,7 @@ public class AuthService : IAuthService
             return null;
         }
 
-        var user = new User(username, BCrypt.Net.BCrypt.HashPassword(password));
+        var user = User.Create(username, BCrypt.Net.BCrypt.HashPassword(password));
 
         _database.Users.Add(user);
         return user;
