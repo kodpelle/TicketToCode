@@ -20,7 +20,8 @@ public class CreateEvent : IEndpoint
     public record Response(int id);
 
     //Logic
-    private static Ok<Response> Handle(Request request, IDatabase db)
+    // Ok<Response> är statisk och stödjer inte async(gör att man kan spara i databasen) så vi måste ändra till nedan
+    private static async Task<IResult> Handle(Request request, ApplicationDBContext db)
     {
         // Todo, use a better constructor that enforces setting all necessary properties
         var ev = new Event();
@@ -36,6 +37,9 @@ public class CreateEvent : IEndpoint
 
         // Todo: does this set id on ev-object?
         db.Events.Add(ev); 
+
+            await db.SaveChangesAsync();  // Viktigt! Sparar ändringarna i databasen.
+
 
         return TypedResults.Ok(new Response(ev.Id));
     }
