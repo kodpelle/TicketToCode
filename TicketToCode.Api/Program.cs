@@ -17,7 +17,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 // Default mapping is /openapi/v1.json
 builder.Services.AddOpenApi();
  
-builder.Services.AddSingleton<IDatabase, Database>();
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Add cookie authentication
