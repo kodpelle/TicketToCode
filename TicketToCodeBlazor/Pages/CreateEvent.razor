@@ -1,0 +1,61 @@
+﻿@page "/create-event"
+@inject EventService EventService
+@inject NavigationManager Navigation
+
+
+<h3>CreateEvent</h3>
+
+<div>
+    <label>Namn:</label>
+    <input @bind="newEvent.Name" />
+</div>
+
+<div>
+    <label>Beskrivning:</label>
+    <textarea @bind="newEvent.Description"></textarea>
+</div>
+
+<div>
+    <label>Typ av event:</label>
+    <select @bind="newEvent.Type">
+        @foreach (var type in Enum.GetValues(typeof(EventType)))
+        {
+            <option value="@type">@type</option>
+        })
+    </select>
+</div>
+
+<div>
+    <label>Starttid:</label>
+    <input type="datetime-local" @bind="newEvent.Start" />
+</div>
+
+<div>
+    <label>Sluttid:</label>
+    <input type="datetime-local" @bind="newEvent.End" />    
+</div>
+
+<button @onclick="CreateNewEvent">Skapa event</button>
+
+<p>@responseMessage</p>
+
+
+
+@code {
+    private EventDto newEvent = new EventDto();
+    private string responseMessage = "";
+
+    private async Task CreateNewEvent()
+    {
+        var eventId = await EventService.CreateEvent(newEvent);
+        if (eventId.HasValue)
+        {
+            responseMessage = $"Event skapat med id {eventId.Value}";
+            //Navigation.NavigateTo($"/event/{eventId.Value}");
+        }
+        else
+        {
+            responseMessage = "Något gick fel!";
+        }
+    }
+}

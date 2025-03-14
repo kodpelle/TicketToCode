@@ -6,6 +6,14 @@ using TicketToCode.Core.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazorClient", policy =>
+    {
+        policy.WithOrigins("https://localhost:7207").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+    });
+});
+
 // Add services to the container.
 
 //Gör att vi kan registrera ApplicationDBContext i DI-containern och konfigurea den att använda SQL med lokal databasfil "local.db"
@@ -33,6 +41,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.UseCors("AllowBlazorClient");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

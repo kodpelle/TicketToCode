@@ -36,4 +36,4 @@ public class Login : IEndpoint
         var response = new Response(result.Username, result.Role);
         return TypedResults.Ok(response);
     }
-} 
+}  

@@ -14,6 +14,7 @@ public static class EndpointExtensions
 
         foreach (var endpointType in endpointTypes)
         {
+            Console.WriteLine($"Mapping endpoint: {endpointType.Name}");
             endpointType.GetMethod(nameof(IEndpoint.MapEndpoint))!
                 .Invoke(null, new object[] { app });
         }
