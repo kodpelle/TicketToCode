@@ -3,3 +3,7 @@ bin/
 obj/
 local.db
 *.db
+TicketToCode.Core/local.db-shm
+TicketToCode.Core/local.db-wal
+ 
+ 

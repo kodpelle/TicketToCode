@@ -1,0 +1,51 @@
+﻿@page "/events"
+@inject EventService EventService
+
+<h3>Events</h3>
+
+@if (events == null)
+{
+    <p>Loading...</p>
+}
+else if (events.Count == 0)
+{
+    <p>No events found</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Namn</th>
+                <th>Beskrivning</th>
+                <th>Typ</th>
+                <th>Start</th>
+                <th>Slut</th>
+                <th>Max Deltagare</th>
+                <th>Detaljer</th>
+            </tr>
+        </thead> 
+        <tbody>
+            @foreach (var ev in events)
+            {
+                <tr>
+                    <td>@ev.Name</td>
+                    <td>@ev.Description</td>
+                    <td>@ev.Type</td>
+                    <td>@ev.Start</td>
+                    <td>@ev.End</td>
+                    <td>@ev.MaxAttendees</td>
+                    <td><a href="/event/@ev.Id">Visa</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<EventDto>? events;
+    protected override async Task OnInitializedAsync()
+    {
+        events = await EventService.GetAllEvents();
+    }
+}

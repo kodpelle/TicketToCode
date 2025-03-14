@@ -19,12 +19,18 @@ public class Register : IEndpoint
         Request request,
         IAuthService authService)
     {
+        if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
+        {
+            return TypedResults.BadRequest("Username and password are required");
+        }
+        
         var result = authService.Register(request.Username, request.Password);
         if (result == null)
-        {
+            {
             return TypedResults.BadRequest("Username already exists");
-        }
-        var response = new Response(result.Username, result.Role);
-        return TypedResults.Ok(response);
+            }
+            
+            var response = new Response(result.Username, result.Role);
+            return TypedResults.Ok(response);
     }
-} 
+}

@@ -1,0 +1,37 @@
+﻿@page "/event/{id:int}"
+@inject EventService EventService
+@inject NavigationManager Navigation
+
+<h3>GetEvent</h3>
+
+@if (eventDetail == null)
+{
+    <p>Laddar...</p>
+}
+else
+{
+    <div>
+        <h4>@eventDetail.Name</h4>
+        <p>Beskrivning: @eventDetail.Description</p>
+        <p>Typ: @eventDetail.Type</p>
+        <p>StartTid: @eventDetail.Start</p>
+        <p>SlutTid: @eventDetail.End</p>
+        <p>Max Deltagare: @eventDetail.MaxAttendees</p>
+    </div>    
+
+    <button @onclick="GoBack">Tillbaka</button>
+}
+@code {
+     [Parameter]
+    public int Id { get; set; }
+    private EventDto? eventDetail;
+    protected override async Task OnInitializedAsync()
+    {
+        eventDetail = await EventService.GetEventById(Id);
+    }
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/events");
+    }
+
+}

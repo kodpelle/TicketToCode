@@ -1,0 +1,56 @@
+﻿@page "/login"
+@rendermode InteractiveServer
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager Navigation
+
+<h3>Logga in</h3>
+
+<input @bind="username" placeholder="Användarnamn" />
+<input @bind="password" type="password" placeholder="Lösenord" />
+<button @onclick="LoginUser">Logga in</button>
+
+<p>@responseMessage</p>
+
+
+@code {
+    private string username = "";
+    private string password = "";
+    private string responseMessage = "";
+
+    private async Task LoginUser()
+    {
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            responseMessage = "Användarnamn och lösenord får inte vara tomma!";
+            return;
+        }
+        try
+        {
+            var client = HttpClientFactory.CreateClient("ApiClient");
+
+            var requestData = new
+            {
+                Username = username,
+                Password = password
+            };
+
+            var response = await client.PostAsJsonAsync("/auth/login", requestData);
+
+            if (response.IsSuccessStatusCode)
+            {
+                responseMessage = "Inloggning lyckades!";
+                Navigation.NavigateTo("/home");
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                responseMessage = $"Inloggning misslyckades: {response.StatusCode} - {errorContent}";
+            }
+        }
+        catch (Exception ex)
+        {
+            responseMessage = $"Ett fel inträffade: {ex.Message}";
+        }
+    }
+
+}
