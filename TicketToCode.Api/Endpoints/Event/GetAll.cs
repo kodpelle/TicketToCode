@@ -18,17 +18,21 @@ public class GetAllEvents : IEndpoint
     );
 
     //Logic
-    private static List<Response> Handle(IDatabase db)
+    private static List<Response> Handle(ApplicationDBContext db)
     {
-        return db.Events
-            .Select(item => new Response(
-                Id: item.Id,
-                Name: item.Name,
-                Description: item.Description,
-                Type: item.Type,
-                Start: item.StartTime,
-                End: item.EndTime,
-                MaxAttendees: item.MaxAttendees
-            )).ToList();
+      var response = new List<Response>();
+        foreach (var item in db.Events)
+        {
+            response.Add(new Response(
+            Id: item.Id,
+            Name: item.Name,
+            Description: item.Description,
+            Type: item.Type,
+            Start: item.StartTime,
+            End: item.EndTime,
+            MaxAttendees: item.MaxAttendees
+          ));
+        }
+        return response;
     }
 }

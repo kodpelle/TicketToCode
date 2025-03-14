@@ -15,16 +15,16 @@ public interface IAuthService
 /// </summary>
 public class AuthService : IAuthService
 {
-    private readonly IDatabase _database;
+    private readonly ApplicationDBContext _applicationDBcontext;
 
-    public AuthService(IDatabase database)
+    public AuthService(ApplicationDBContext applicationDBContext)
     {
-        _database = database;
+        _applicationDBcontext = applicationDBContext;
     }
 
     public User? Login(string username, string password)
     {
-        var user = _database.Users.FirstOrDefault(u => u.Username == username);
+        var user = _applicationDBcontext.Users.FirstOrDefault(u => u.Username == username);
         if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
         {
             return null;
@@ -35,14 +35,14 @@ public class AuthService : IAuthService
 
     public User? Register(string username, string password)
     {
-        if (_database.Users.Any(u => u.Username == username))
+        if (_applicationDBcontext.Users.Any(u => u.Username == username))
         {
             return null;
         }
 
         var user = User.Create(username, BCrypt.Net.BCrypt.HashPassword(password));
 
-        _database.Users.Add(user);
+        _applicationDBcontext.Users.Add(user);
         return user;
     }
 } 
