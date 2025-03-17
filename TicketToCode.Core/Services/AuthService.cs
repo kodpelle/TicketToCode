@@ -39,8 +39,17 @@ public class AuthService : IAuthService
         {
             return null;
         }
+        string role;
+        if (username.Contains("Admin",StringComparison.OrdinalIgnoreCase))
+        {
+            role = UserRoles.Admin;
+        }
+        else
+        {
+            role = UserRoles.User;
+        }
 
-        var user = User.Create(username, BCrypt.Net.BCrypt.HashPassword(password));
+        var user = User.Create(username, BCrypt.Net.BCrypt.HashPassword(password),role);
 
         _applicationDBcontext.Users.Add(user);
         //save user to the database
