@@ -2,13 +2,33 @@
 @inject HttpClient HttpClient
 @inject NavigationManager Navigation
 
-<h3>Logga in</h3>
+<div class="login-page">
+    <div class="login-container">
+        <h1 class="login-title">Welcome Back</h1>
+        <p class="login-subtitle">Sign in to access your account</p>
 
-<input @bind="username" placeholder="Användarnamn" />
-<input @bind="password" type="password" placeholder="Lösenord" />
-<button @onclick="LoginUser">Logga in</button>
+        <div class="form-group">
+            <label class="form-label">Username</label>
+            <input @bind="username" class="form-control" placeholder="Enter your username" />
+        </div>
 
-<p>@responseMessage</p>
+        <div class="form-group">
+            <label class="form-label">Password</label>
+            <input @bind="password" type="password" class="form-control" placeholder="Enter your password" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(responseMessage))
+        {
+            <div class="validation-message">@responseMessage</div>
+        }
+
+        <button @onclick="LoginUser" class="btn-primary">Log In</button>
+
+        <div class="register-link">
+            Don't have an account? <a href="/register">Register now</a>
+        </div>
+    </div>
+</div>
 
 @code {
     private string username = "";
@@ -19,7 +39,7 @@
     {
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         {
-            responseMessage = "Användarnamn och lösenord får inte vara tomma!";
+            responseMessage = "Username and password cannot be empty!";
             return;
         }
 
@@ -35,18 +55,18 @@
 
             if (response.IsSuccessStatusCode)
             {
-                responseMessage = "Inloggning lyckades!";
-                Navigation.NavigateTo("/home");
+                responseMessage = "Login successful!";
+                Navigation.NavigateTo("/events");
             }
             else
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                responseMessage = $"Inloggning misslyckades: {response.StatusCode} - {errorContent}";
+                responseMessage = $"Login failed: {errorContent}";
             }
         }
         catch (Exception ex)
         {
-            responseMessage = $"Ett fel inträffade: {ex.Message}";
+            responseMessage = $"An error occurred: {ex.Message}";
         }
     }
 }

@@ -2,36 +2,66 @@
 @inject EventService EventService
 @inject NavigationManager Navigation
 
-<h3>GetEvent</h3>
+<div class="event-details-page">
+    @if (eventDetail == null)
+    {
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading event details...</p>
+        </div>
+    }
+    else
+    {
+        <div class="event-details-container">
+            <div class="event-header">
+                <h1 class="event-title">@eventDetail.Name</h1>
+                <span class="event-type">@eventDetail.Type</span>
+            </div>
 
-@if (eventDetail == null)
-{
-    <p>Laddar...</p>
-}
-else
-{
-    <div>
-        <h4>@eventDetail.Name</h4>
-        <p>Beskrivning: @eventDetail.Description</p>
-        <p>Typ: @eventDetail.Type</p>
-        <p>StartTid: @eventDetail.Start</p>
-        <p>SlutTid: @eventDetail.End</p>
-        <p>Max Deltagare: @eventDetail.MaxAttendees</p>
-    </div>    
+            <div class="event-info-grid">
+                <div class="info-card">
+                    <div class="info-icon">📅</div>
+                    <div class="info-content">
+                        <h3>Date & Time</h3>
+                        <p>Starts: @eventDetail.Start.ToString("MMM dd, yyyy HH:mm")</p>
+                        <p>Ends: @eventDetail.End.ToString("MMM dd, yyyy HH:mm")</p>
+                    </div>
+                </div>
 
-    <button @onclick="GoBack">Tillbaka</button>
-}
+                <div class="info-card">
+                    <div class="info-icon">👥</div>
+                    <div class="info-content">
+                        <h3>Capacity</h3>
+                        <p>@(eventDetail.MaxAttendees > 0 ? $"Limited to {eventDetail.MaxAttendees} attendees" : "Unlimited capacity")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="description-card">
+                <h2>About This Event</h2>
+                <p>@eventDetail.Description</p>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-primary">Register Now</button>
+                <button class="btn-secondary" @onclick="GoBack">Back to Events</button>
+            </div>
+        </div>
+    }
+</div>
+
 @code {
-     [Parameter]
+    [Parameter]
     public int Id { get; set; }
     private EventDto? eventDetail;
+
     protected override async Task OnInitializedAsync()
     {
         eventDetail = await EventService.GetEventById(Id);
     }
+
     private void GoBack()
     {
         Navigation.NavigateTo("/events");
     }
-
 }
