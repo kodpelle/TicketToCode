@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject NavigationManager Navigation
 
 <PageTitle>TicketToCode - Your Event Management Platform</PageTitle>
 
@@ -10,8 +11,8 @@
         <p class="hero-subtitle">Your one-stop platform for attending amazing events</p>
 
         <div class="auth-buttons">
-            <button class="btn-primary">Register Now</button>
-            <button class="btn-outline">Log In</button>
+            <button class="btn-primary" @onclick="GoToRegister">Register Now</button>
+            <button class="btn-outline" @onclick="GoToLogin">Log In</button>
         </div>
     </div>
 
@@ -41,3 +42,14 @@
         </div>
     </div>
 </section>
+
+@code {
+    private void GoToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }
+    private void GoToRegister()
+    {
+        Navigation.NavigateTo("/register");
+    }
+}
