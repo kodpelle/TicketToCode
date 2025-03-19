@@ -9,13 +9,15 @@
 .landing-page {
     position: relative;
     width: 100%;
-    min-height: 100vh;
-    overflow: hidden;
+    height: 100vh;
+    overflow: hidden; /* Default for desktop */
+    display: flex;
+    flex-direction: column;
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 .background-image {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -33,12 +35,13 @@
     text-align: center;
     color: white;
     z-index: 1;
-    padding: 8rem 2rem;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    padding: 6rem 2rem; /* Reduced padding */
+    background: linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.78));
+    flex: 0 0 auto; /* Don't grow or shrink */
 }
 
 .hero-title {
-    font-size: 4rem;
+    font-size: clamp(2.5rem, 5vw, 4rem); /* Responsive font size */
     font-weight: 700;
     margin-bottom: 1.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -47,7 +50,7 @@
 }
 
 .hero-subtitle {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 2vw, 1.5rem); /* Responsive font size */
     font-weight: 400;
     margin-bottom: 2rem;
     opacity: 0.9;
@@ -74,10 +77,11 @@
     transition: all 0.3s ease;
 }
 
-    .btn-primary:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px);
-    }
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
 
 .btn-outline {
     padding: 0.8rem 2rem;
@@ -90,77 +94,185 @@
     transition: all 0.3s ease;
 }
 
-    .btn-outline:hover {
-        background-color: white;
-        color: #333;
-        transform: translateY(-2px);
-    }
+.btn-outline:hover {
+    background-color: white;
+    color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+}
 
 .featured-events {
+    position: relative;
     padding: 4rem 2rem;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(40px);
-    
+    background: linear-gradient(rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.74));
+    backdrop-filter: blur(90px);
+    flex: 1; /* Take up remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+.featured-events::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
 }
 
 .section-title {
     text-align: center;
     color: white;
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
+    font-size: clamp(2rem, 3vw, 2.5rem); /* Responsive font size */
+    margin-bottom: 4rem;
     font-weight: 600;
     letter-spacing: -0.5px;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #007bff;
+    border-radius: 2px;
 }
 
 .events-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 1000px;
+    gap: 2.5rem;
+    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
+    padding: 0 1rem;
+    flex: 1; /* Take up remaining space */
 }
 
 .event-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
-    padding: 1.5rem;
+    padding: 2rem;
     color: white;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
 }
 
-    .event-card:hover {
-        transform: translateY(-5px);
-    }
+.event-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #007bff, #00ff88);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.event-card:hover::before {
+    opacity: 1;
+}
 
 .event-title {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     font-weight: 600;
+    color: #fff;
 }
 
 .event-date {
-    color: #ffd700;
-    margin-bottom: 0.5rem;
+    color: #007bff;
+    margin-bottom: 0.8rem;
     font-weight: 500;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .event-description {
     opacity: 0.9;
     margin-bottom: 1rem;
     line-height: 1.6;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 @media (max-width: 768px) {
+    .landing-page {
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+    }
+
+    .hero-section {
+        padding: 3rem 1rem; /* Reduced padding */
+        min-height: auto; /* Remove fixed height */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2.5rem; /* Fixed size for mobile */
+        margin-bottom: 1rem;
     }
 
     .hero-subtitle {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
     }
 
     .auth-buttons {
         flex-direction: column;
         align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+    }
+
+    .featured-events {
+        padding: 3rem 1rem;
+        min-height: auto; /* Remove fixed height */
+    }
+
+    .section-title {
+        margin-bottom: 2.5rem; /* Reduced margin */
+    }
+
+    .events-grid {
+        gap: 1.5rem;
+        padding-bottom: 2rem;
+    }
+
+    .event-card {
+        padding: 1.5rem; /* Slightly reduced padding */
+    }
+}
+
+/* Add styles for larger screens */
+@media (min-width: 1440px) {
+    .events-grid {
+        grid-template-columns: repeat(3, minmax(300px, 1fr)); /* Force 3 columns on large screens */
+    }
+
+    .hero-section {
+        padding: 8rem 2rem; /* More padding on larger screens */
     }
 }
