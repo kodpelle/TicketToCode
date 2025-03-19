@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TicketToCode.Core\TicketToCode.Core.csproj" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
