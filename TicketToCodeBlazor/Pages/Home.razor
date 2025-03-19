@@ -1,12 +1,43 @@
 ﻿@page "/"
 
-<section class="landing-page-page">
-    <div class="background-image"></div>
-    <div class="content">
-        <h1>Hello, world!</h1>
+<PageTitle>TicketToCode - Your Event Management Platform</PageTitle>
 
-        Welcome to your new app.
+<section class="landing-page">
+    <div class="background-image"></div>
+
+    <div class="hero-section">
+        <h1 class="hero-title">Welcome to TicketToCode</h1>
+        <p class="hero-subtitle">Your one-stop platform for attending amazing events</p>
+
+        <div class="auth-buttons">
+            <button class="btn-primary">Register Now</button>
+            <button class="btn-outline">Log In</button>
+        </div>
+    </div>
+
+    @*test data för styling purposes*@
+    <div class="featured-events">
+        <h2 class="section-title">Featured Events</h2>
+        <div class="events-grid">
+            <div class="event-card">
+                <h3 class="event-title">Tech Conference 2024</h3>
+                <p class="event-date">March 15, 2024</p>
+                <p class="event-description">Join us for the biggest tech conference of the year. Network with industry leaders and learn about the latest innovations.</p>
+            </div>
+
+            @*test data för styling purposes*@
+            <div class="event-card">
+                <h3 class="event-title">Music Festival</h3>
+                <p class="event-date">April 20, 2024</p>
+                <p class="event-description">Experience an unforgettable weekend of live music, featuring top artists from around the world.</p>
+            </div>
+
+            @*test data för styling purposes*@
+            <div class="event-card">
+                <h3 class="event-title">Food & Wine Expo</h3>
+                <p class="event-date">May 5, 2024</p>
+                <p class="event-description">Indulge in culinary delights and wine tastings from renowned chefs and wineries.</p>
+            </div>
+        </div>
     </div>
 </section>
-
-<PageTitle>Home</PageTitle>
