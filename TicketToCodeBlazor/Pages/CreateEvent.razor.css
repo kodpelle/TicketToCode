@@ -126,37 +126,20 @@ select.form-control option:checked {
 textarea.form-control {
     min-height: 100px;
     max-height: 150px;
-    resize: vertical;
-}
-
-.image-upload {
-    border: 2px dashed rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    padding: 1.5rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.image-upload:hover {
-    border-color: #e31837;
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.image-upload-text {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
+    resize: none;
 }
 
 .btn-group {
     display: flex;
     gap: 1rem;
     margin-top: 1.5rem;
+    width: 100%;
+    justify-content: center;
 }
 
 .btn-primary {
-    flex: 1;
-    padding: 0.7rem 1.5rem;
+    flex: 0 1 auto;
+    padding: 0.7rem 2rem;
     font-size: 1rem;
     border-radius: 8px;
     background-color: white;
@@ -164,6 +147,7 @@ textarea.form-control {
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
+    min-width: 150px;
 }
 
 .btn-primary:hover {
@@ -173,8 +157,8 @@ textarea.form-control {
 }
 
 .btn-secondary {
-    flex: 1;
-    padding: 0.7rem 1.5rem;
+    flex: 0 1 auto;
+    padding: 0.7rem 2rem;
     font-size: 1rem;
     border-radius: 8px;
     background-color: transparent;
@@ -182,6 +166,7 @@ textarea.form-control {
     border: 1px solid rgba(255, 255, 255, 0.3);
     cursor: pointer;
     transition: all 0.3s ease;
+    min-width: 150px;
 }
 
 .btn-secondary:hover {
@@ -216,5 +201,12 @@ textarea.form-control {
 
     .btn-group {
         flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        min-width: unset;
     }
 }

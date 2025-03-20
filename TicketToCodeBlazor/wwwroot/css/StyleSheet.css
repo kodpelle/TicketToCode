@@ -1,7 +1,6 @@
-/*importerar font och ser till att vi inte får med margins och paddings från grundhtmlen (inga vita kanter)  */
+/*importerar font och ser till att vi inte fÃ¥r med margins och paddings frÃ¥n grundhtmlen (inga vita kanter)  */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 html, body {
-
     margin: 0;
     padding: 0;
     width: 100%;
@@ -18,4 +17,34 @@ html, body {
 
 * {
     box-sizing: border-box;
+}
+
+.logo-button {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.logo-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.logo-button svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
 }

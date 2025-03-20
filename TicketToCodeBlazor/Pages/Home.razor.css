@@ -10,7 +10,6 @@
     position: relative;
     width: 100%;
     height: 100vh;
-    overflow: hidden; /* Default for desktop */
     display: flex;
     flex-direction: column;
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -26,7 +25,8 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    filter: blur(1px);
+
+    filter: blur(0px);
     z-index: -1;
 }
 
@@ -35,25 +35,24 @@
     text-align: center;
     color: white;
     z-index: 1;
-    padding: 6rem 2rem; /* Reduced padding */
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
-    backdrop-filter: blur(0px);
-    flex: 0 0 auto; /* Don't grow or shrink */
+    padding: 2rem;
+    /*background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));*/
+    flex: 0 0 auto;
 }
 
 .hero-title {
-    font-size: clamp(2.5rem, 5vw, 4rem); /* Responsive font size */
+    font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: 700;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     letter-spacing: -0.5px;
     line-height: 1.2;
 }
 
 .hero-subtitle {
-    font-size: clamp(1.2rem, 2vw, 1.5rem); /* Responsive font size */
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
     font-weight: 400;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     opacity: 0.9;
     max-width: 600px;
     margin-left: auto;
@@ -64,12 +63,12 @@
     display: flex;
     gap: 1rem;
     justify-content: center;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
 }
 
 .btn-primary {
-    padding: 0.8rem 2rem;
-    font-size: 1.1rem;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
     border-radius: 30px;
     background-color: #007bff;
     color: white;
@@ -85,31 +84,29 @@
 }
 
 .btn-outline {
-    padding: 0.8rem 2rem;
-    font-size: 1.1rem;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
     border-radius: 30px;
-    background-color: transparent;
+    background-color: rgb(80, 174, 215, 0.9);
     color: white;
     border: 2px solid white;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.btn-outline:hover {
-    background-color: white;
-    color: #333;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
-}
+    .btn-outline:hover {
+        background-color: rgb(36, 108, 139);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+    }
 
 .featured-events {
     position: relative;
-    padding: 4rem 2rem;
+    padding: 2rem;
     background: linear-gradient(rgba(0, 0, 0, 0.51), rgba(0, 0, 0, 0.51));
     backdrop-filter: blur(2px);
-    flex: 1; /* Take up remaining space */
-    display: flex;
-    flex-direction: column;
+    margin-top: auto;
 }
 
 .featured-events::before {
@@ -125,8 +122,8 @@
 .section-title {
     text-align: center;
     color: white;
-    font-size: clamp(2rem, 3vw, 2.5rem); /* Responsive font size */
-    margin-bottom: 4rem;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    margin-bottom: 2rem;
     font-weight: 600;
     letter-spacing: -0.5px;
     position: relative;
@@ -138,7 +135,7 @@
 .section-title::after {
     content: '';
     position: absolute;
-    bottom: -1rem;
+    bottom: -0.5rem;
     left: 50%;
     transform: translateX(-50%);
     width: 60px;
@@ -149,19 +146,18 @@
 
 .events-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
     padding: 0 1rem;
-    flex: 1; /* Take up remaining space */
 }
 
 .event-card {
     background: rgb(80, 174, 215, 0.09);
     border-radius: 15px;
-    padding: 2rem;
+    padding: 1.5rem;
     color: white;
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -193,15 +189,15 @@
 }
 
 .event-title {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
     font-weight: 600;
     color: #fff;
 }
 
 .event-date {
     color: #007bff;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
     font-weight: 500;
     font-size: 0.9rem;
     text-transform: uppercase;
@@ -210,9 +206,9 @@
 
 .event-description {
     opacity: 0.9;
-    margin-bottom: 1rem;
-    line-height: 1.6;
-    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+    font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.9);
 }
 
@@ -220,60 +216,39 @@
     .landing-page {
         height: auto;
         min-height: 100vh;
-        overflow-y: auto;
     }
 
     .hero-section {
-        padding: 3rem 1rem; /* Reduced padding */
-        min-height: auto; /* Remove fixed height */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .hero-title {
-        font-size: 2.5rem; /* Fixed size for mobile */
-        margin-bottom: 1rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1.1rem;
-        margin-bottom: 1.5rem;
+        padding: 2rem 1rem;
     }
 
     .auth-buttons {
         flex-direction: column;
         align-items: center;
         gap: 0.75rem;
-        margin-bottom: 2rem;
     }
 
     .featured-events {
-        padding: 3rem 1rem;
-        min-height: auto; /* Remove fixed height */
-    }
-
-    .section-title {
-        margin-bottom: 2.5rem; /* Reduced margin */
+        padding: 2rem 1rem;
     }
 
     .events-grid {
-        gap: 1.5rem;
-        padding-bottom: 2rem;
+        gap: 1rem;
     }
 
     .event-card {
-        padding: 1.5rem; /* Slightly reduced padding */
+        padding: 1.2rem;
     }
 }
 
 /* Add styles for larger screens */
 @media (min-width: 1440px) {
     .events-grid {
-        grid-template-columns: repeat(3, minmax(300px, 1fr)); /* Force 3 columns on large screens */
+        grid-template-columns: repeat(3, minmax(300px, 1fr));
+        max-width: 1400px;
     }
 
     .hero-section {
-        padding: 8rem 2rem; /* More padding on larger screens */
+        padding: 3rem 2rem;
     }
 }

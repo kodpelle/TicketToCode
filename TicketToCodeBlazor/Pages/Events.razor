@@ -1,7 +1,14 @@
 ﻿@page "/events"
 @inject EventService EventService
+@inject NavigationManager Navigation
 
 <div class="events-page">
+    <button class="logo-button" @onclick="GoToHome">
+        <svg viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+    </button>
+
     <div class="events-header">
         <h1 class="events-title">Upcoming Events</h1>
         <p class="events-subtitle">Discover and join amazing events in your area</p>
@@ -48,5 +55,10 @@
     protected override async Task OnInitializedAsync()
     {
         events = await EventService.GetAllEvents();
+    }
+
+    private void GoToHome()
+    {
+        Navigation.NavigateTo("/");
     }
 }
