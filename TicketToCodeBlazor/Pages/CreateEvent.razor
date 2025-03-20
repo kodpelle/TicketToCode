@@ -3,6 +3,12 @@
 @inject NavigationManager Navigation
 
 <div class="create-event-page">
+    <button class="logo-button" @onclick="GoToHome">
+        <svg viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+    </button>
+
     <div class="create-event-container">
         <h1 class="create-event-title">Create New Event</h1>
         <p class="create-event-subtitle">Share your event with the community</p>
@@ -38,20 +44,13 @@
                 <textarea @bind="newEvent.Description" class="form-control" placeholder="Describe your event"
                     rows="4"></textarea>
             </div>
-
-            <div class="form-group full-width">
-                <div class="image-upload">
-                    <p class="image-upload-text">Click or drag to upload event image</p>
-                </div>
-            </div>
         </div>
 
         @if (!string.IsNullOrEmpty(responseMessage))
         {
             <div class="validation-message">@responseMessage</div>
         }
-
-        <div class="btn-group">
+        <div class="button-group">
             <button @onclick="CreateNewEvent" class="btn-primary">Create Event</button>
             <button @onclick="@GoToEvents" class="btn-secondary">Cancel</button>
         </div>
@@ -78,5 +77,10 @@
     public void GoToEvents()
     {
         Navigation.NavigateTo("/events");
+    }
+
+    private void GoToHome()
+    {
+        Navigation.NavigateTo("/");
     }
 }

@@ -3,6 +3,12 @@
 @inject NavigationManager Navigation
 
 <div class="event-details-page">
+    <button class="logo-button" @onclick="GoToHome">
+        <svg viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+    </button>
+
     @if (eventDetail == null)
     {
         <div class="loading-container">
@@ -63,5 +69,10 @@
     private void GoBack()
     {
         Navigation.NavigateTo("/events");
+    }
+
+    private void GoToHome()
+    {
+        Navigation.NavigateTo("/");
     }
 }

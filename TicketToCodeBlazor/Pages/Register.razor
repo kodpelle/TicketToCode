@@ -4,6 +4,12 @@
 @inject NavigationManager Navigation
 
 <div class="register-page">
+    <button class="logo-button" @onclick="GoToHome">
+        <svg viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+    </button>
+
     <div class="register-container">
         <h1 class="register-title">Create Account</h1>
         <p class="register-subtitle">Join our community and start exploring amazing events</p>
@@ -68,5 +74,10 @@
         {
             responseMessage = $"An error occurred: {ex.Message}";
         }
+    }
+
+    private void GoToHome()
+    {
+        Navigation.NavigateTo("/");
     }
 }
