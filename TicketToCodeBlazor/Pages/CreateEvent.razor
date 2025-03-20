@@ -2,44 +2,61 @@
 @inject EventService EventService
 @inject NavigationManager Navigation
 
+<div class="create-event-page">
+    <div class="create-event-container">
+        <h1 class="create-event-title">Create New Event</h1>
+        <p class="create-event-subtitle">Share your event with the community</p>
 
-<h3>CreateEvent</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">Event Name</label>
+                <input @bind="newEvent.Name" class="form-control" placeholder="Enter event name" />
+            </div>
 
-<div>
-    <label>Namn:</label>
-    <input @bind="newEvent.Name" />
-</div>
+            <div class="form-group">
+                <label class="form-label">Event Type</label>
+                <select @bind="newEvent.Type" class="form-control">
+                    @foreach (var type in Enum.GetValues(typeof(EventType)))
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
+            </div>
 
-<div>
-    <label>Beskrivning:</label>
-    <textarea @bind="newEvent.Description"></textarea>
-</div>
+            <div class="form-group">
+                <label class="form-label">Start Time</label>
+                <input type="datetime-local" @bind="newEvent.Start" class="form-control" />
+            </div>
 
-<div>
-    <label>Typ av event:</label>
-    <select @bind="newEvent.Type">
-        @foreach (var type in Enum.GetValues(typeof(EventType)))
+            <div class="form-group">
+                <label class="form-label">End Time</label>
+                <input type="datetime-local" @bind="newEvent.End" class="form-control" />
+            </div>
+
+            <div class="form-group full-width">
+                <label class="form-label">Description</label>
+                <textarea @bind="newEvent.Description" class="form-control" placeholder="Describe your event"
+                    rows="4"></textarea>
+            </div>
+
+            <div class="form-group full-width">
+                <div class="image-upload">
+                    <p class="image-upload-text">Click or drag to upload event image</p>
+                </div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(responseMessage))
         {
-            <option value="@type">@type</option>
-        })
-    </select>
+            <div class="validation-message">@responseMessage</div>
+        }
+
+        <div class="btn-group">
+            <button @onclick="CreateNewEvent" class="btn-primary">Create Event</button>
+            <button @onclick="@GoToEvents" class="btn-secondary">Cancel</button>
+        </div>
+    </div>
 </div>
-
-<div>
-    <label>Starttid:</label>
-    <input type="datetime-local" @bind="newEvent.Start" />
-</div>
-
-<div>
-    <label>Sluttid:</label>
-    <input type="datetime-local" @bind="newEvent.End" />    
-</div>
-
-<button @onclick="CreateNewEvent">Skapa event</button>
-
-<p>@responseMessage</p>
-
-
 
 @code {
     private EventDto newEvent = new EventDto();
@@ -50,12 +67,16 @@
         var eventId = await EventService.CreateEvent(newEvent);
         if (eventId.HasValue)
         {
-            responseMessage = $"Event skapat med id {eventId.Value}";
-            //Navigation.NavigateTo($"/event/{eventId.Value}");
+            responseMessage = $"Event created successfully with ID {eventId.Value}";
+            Navigation.NavigateTo($"/event/{eventId.Value}");
         }
         else
         {
-            responseMessage = "Något gick fel!";
+            responseMessage = "Failed to create event. Please try again.";
         }
+    }
+    public void GoToEvents()
+    {
+        Navigation.NavigateTo("/events");
     }
 }

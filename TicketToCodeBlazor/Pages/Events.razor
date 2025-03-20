@@ -1,46 +1,47 @@
 ﻿@page "/events"
 @inject EventService EventService
 
-<h3>Events</h3>
+<div class="events-page">
+    <div class="events-header">
+        <h1 class="events-title">Upcoming Events</h1>
+        <p class="events-subtitle">Discover and join amazing events in your area</p>
+    </div>
 
-@if (events == null)
-{
-    <p>Loading...</p>
-}
-else if (events.Count == 0)
-{
-    <p>No events found</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Namn</th>
-                <th>Beskrivning</th>
-                <th>Typ</th>
-                <th>Start</th>
-                <th>Slut</th>
-                <th>Max Deltagare</th>
-                <th>Detaljer</th>
-            </tr>
-        </thead> 
-        <tbody>
+    <div class="events-actions">
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Search events..." />
+        </div>
+        <a href="/create-event" class="btn-create">
+            <span>Create Event</span>
+        </a>
+    </div>
+
+    @if (events == null)
+    {
+        <div class="events-loading">Loading events...</div>
+    }
+    else if (events.Count == 0)
+    {
+        <div class="events-empty">No events found</div>
+    }
+    else
+    {
+        <div class="events-grid">
             @foreach (var ev in events)
             {
-                <tr>
-                    <td>@ev.Name</td>
-                    <td>@ev.Description</td>
-                    <td>@ev.Type</td>
-                    <td>@ev.Start</td>
-                    <td>@ev.End</td>
-                    <td>@ev.MaxAttendees</td>
-                    <td><a href="/event/@ev.Id">Visa</a></td>
-                </tr>
+                <div class="event-card">
+                    <h3 class="event-title">@ev.Name</h3>
+                    <p class="event-date">@ev.Start.ToString("MMM dd, yyyy")</p>
+                    <p class="event-description">@ev.Description</p>
+                    <div class="event-footer">
+                        <span class="event-type">@ev.Type</span>
+                        <a href="@($"/event/{ev.Id}")" class="event-details-link">View Details</a>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
-}
+        </div>
+    }
+</div>
 
 @code {
     private List<EventDto>? events;

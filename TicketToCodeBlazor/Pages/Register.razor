@@ -1,15 +1,35 @@
-﻿@page "/"
+﻿@page "/register"
 
 @inject HttpClient HttpClient
 @inject NavigationManager Navigation
 
-<h3>Registrera ny användare</h3>
+<div class="register-page">
+    <div class="register-container">
+        <h1 class="register-title">Create Account</h1>
+        <p class="register-subtitle">Join our community and start exploring amazing events</p>
 
-<input @bind="username" placeholder="Användarnamn" />
-<input @bind="password" type="password" placeholder="Lösenord" />
-<button @onclick="RegisterUser">Registrera</button>
+        <div class="form-group">
+            <label class="form-label">Username</label>
+            <input @bind="username" class="form-control" placeholder="Enter your username" />
+        </div>
 
-<p>@responseMessage</p>
+        <div class="form-group">
+            <label class="form-label">Password</label>
+            <input @bind="password" type="password" class="form-control" placeholder="Enter your password" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(responseMessage))
+        {
+            <div class="validation-message">@responseMessage</div>
+        }
+
+        <button @onclick="RegisterUser" class="btn-primary">Register</button>
+
+        <div class="login-link">
+            Already have an account? <a href="/login">Log in</a>
+        </div>
+    </div>
+</div>
 
 @code {
     private string username = "";
@@ -20,7 +40,7 @@
     {
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         {
-            responseMessage = "Användarnamn och lösenord får inte vara tomma!";
+            responseMessage = "Username and password cannot be empty!";
             return;
         }
         try
@@ -35,21 +55,18 @@
 
             if (response.IsSuccessStatusCode)
             {
-                responseMessage = "Registrering lyckades!";
+                responseMessage = "Registration successful!";
                 Navigation.NavigateTo("/login");
-                Console.WriteLine(HttpClient.BaseAddress);
-                Console.WriteLine(HttpClient.BaseAddress + "auth/register");
-
             }
             else
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                responseMessage = $"Registrering misslyckades: {response.StatusCode} - {errorContent}";
+                responseMessage = $"Registration failed: {errorContent}";
             }
         }
         catch (Exception ex)
         {
-            responseMessage = $"Ett fel inträffade: {ex.Message}";
+            responseMessage = $"An error occurred: {ex.Message}";
         }
     }
 }
