@@ -3,7 +3,7 @@
 public class CreateBooking : IEndpoint
 {
     public static void MapEndpoint(IEndpointRouteBuilder app) => app
-   .MapPost("/booking", Handle)
+   .MapPost("/bookings", Handle)
    .WithSummary("Create booking");
 
     public record Request(

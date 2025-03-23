@@ -20,6 +20,7 @@ public class GetBooking : IEndpoint
     private static Response Handle([AsParameters] Request request, ApplicationDBContext db)
     {
         var booking = db.Bookings.Find(request.Id);
+        var User = db.Users.Find(booking.UserId);
         if (booking == null)
         {
             throw new Exception("Booking not found");
