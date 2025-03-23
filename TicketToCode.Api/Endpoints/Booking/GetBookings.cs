@@ -11,9 +11,9 @@ public class GetBooking : IEndpoint
         int Id,
         int UserId,
         int EventId,
-        string Name,
-        string Description,
         int TicketCount,
+        User User,
+        Event Event,
         DateTime BookingDate
     );
 
@@ -35,9 +35,9 @@ public class GetBooking : IEndpoint
             Id: booking.Id,
             UserId: booking.UserId,
             EventId: booking.EventId,
-            Name: eventEntity.Name,
-            Description: eventEntity.Description,
             TicketCount: booking.TicketCount,
+            User: booking.User,
+            Event: booking.Event,
             BookingDate: booking.BookingDate
         );
     }

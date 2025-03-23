@@ -9,8 +9,6 @@ public class CreateBooking : IEndpoint
     public record Request(
      int UserId,
      int EventId,
-     User User,
-     Event Event,
      int TicketCount,
      DateTime BookingDate
      );
@@ -33,8 +31,6 @@ public class CreateBooking : IEndpoint
 
         b.UserId = request.UserId;
         b.EventId = request.EventId;    
-        b.User = request.User;
-        b.Event = request.Event;
         b.TicketCount = request.TicketCount;
         b.BookingDate = request.BookingDate;
         // Todo: does this set id on ev-object?
