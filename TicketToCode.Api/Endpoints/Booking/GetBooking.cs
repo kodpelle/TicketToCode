@@ -11,15 +11,16 @@ public class GetBooking : IEndpoint
         int Id,
         int UserId,
         int EventId,
-        string Name,
-        string Description,
         int TicketCount,
+        User User,
+        Event Event,
         DateTime BookingDate
     );
 
     private static Response Handle([AsParameters] Request request, ApplicationDBContext db)
     {
         var booking = db.Bookings.Find(request.Id);
+        var User = db.Users.Find(booking.UserId);
         if (booking == null)
         {
             throw new Exception("Booking not found");
@@ -35,9 +36,9 @@ public class GetBooking : IEndpoint
             Id: booking.Id,
             UserId: booking.UserId,
             EventId: booking.EventId,
-            Name: eventEntity.Name,
-            Description: eventEntity.Description,
             TicketCount: booking.TicketCount,
+            User: booking.User,
+            Event: booking.Event,
             BookingDate: booking.BookingDate
         );
     }
