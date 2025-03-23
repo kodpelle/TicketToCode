@@ -2,7 +2,7 @@
 public class DeleteBooking : IEndpoint
 {
     public static void MapEndpoint(IEndpointRouteBuilder app) => app
-    .MapDelete("/bookings/{id}/delete", Handle)
+    .MapDelete("/bookings/{id}", Handle)
     .WithSummary("Delete an booking");
 
     private static async Task<IResult> Handle(int id, ApplicationDBContext db)
