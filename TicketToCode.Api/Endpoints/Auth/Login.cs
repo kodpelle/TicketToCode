@@ -1,4 +1,4 @@
-using TicketToCode.Api.Services;
+using TicketToCode.Core.Services;
 
 namespace TicketToCode.Api.Endpoints.Auth;
 
