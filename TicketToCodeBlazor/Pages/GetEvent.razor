@@ -1,6 +1,7 @@
 ﻿@page "/event/{id:int}"
 @inject EventService EventService
 @inject NavigationManager Navigation
+@inject BookingService BookingService
 
 <div class="event-details-page">
     <button class="logo-button" @onclick="GoToHome">
@@ -49,7 +50,7 @@
             </div>
 
             <div class="action-buttons">
-                <button class="btn-primary">Register Now</button>
+                    <button @onclick="RegisterForEvent" class="btn-primary">Register Now</button>
                 <button class="btn-secondary" @onclick="GoBack">Back to Events</button>
             </div>
         </div>
@@ -60,11 +61,17 @@
     [Parameter]
     public int Id { get; set; }
     private EventDto? eventDetail;
+	private BookingDto? bookingDetail;
 
     protected override async Task OnInitializedAsync()
     {
         eventDetail = await EventService.GetEventById(Id);
     }
+
+	private async Task RegisterForEvent()
+	{
+		bookingDetail = await BookingService.CreateBooking();
+	}
 
     private void GoBack()
     {

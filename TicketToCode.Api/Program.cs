@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TicketToCode.Api.Endpoints;
-using TicketToCode.Api.Services;
+using TicketToCode.Core.Services;
 using TicketToCode.Core.Data;
 
 

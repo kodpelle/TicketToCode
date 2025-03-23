@@ -1,4 +1,4 @@
-﻿namespace TicketToCode.Api.Endpoints;
+﻿namespace TicketToCode.Api.Endpoints.Auth;
 
 public class UpdateUser : IEndpoint
 {
