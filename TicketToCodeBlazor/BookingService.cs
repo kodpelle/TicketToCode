@@ -35,12 +35,13 @@ namespace TicketToCodeBlazor
         }
         public async Task DeleteBooking(int id)
         {
-            await _httpClient.DeleteAsync($"https://localhost:7206/bookings/{id}/delete");
+            await _httpClient.DeleteAsync($"https://localhost:7206/bookings/{id}");
         }
 
-        public async Task GetUserBookings(int userId)
+        public async Task<List<BookingDto>> GetUserBookings(int userId)
         {
-            await _httpClient.GetFromJsonAsync<List<BookingDto>>($"https://localhost:7206/bookings/{userId}/bookings");
+            return await _httpClient.GetFromJsonAsync<List<BookingDto>>($"https://localhost:7206/bookings/{userId}/bookings")
+            ?? new List<BookingDto>();
         }
 
     }
