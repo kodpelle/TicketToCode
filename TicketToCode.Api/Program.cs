@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using TicketToCode.Api.Endpoints;
-using TicketToCode.Core.Services;
 using TicketToCode.Core.Data;
 using Microsoft.AspNetCore.Identity;
 
@@ -27,7 +26,6 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 builder.Services.AddOpenApi();
  
 
-builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Add cookie authentication
 builder.Services.AddAuthentication()

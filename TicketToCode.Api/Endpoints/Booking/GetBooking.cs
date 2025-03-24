@@ -1,4 +1,5 @@
-﻿using TicketToCode.Api.Endpoints;
+﻿using Microsoft.AspNetCore.Identity;
+using TicketToCode.Api.Endpoints;
 public class GetBooking : IEndpoint
 {
     public static void MapEndpoint(IEndpointRouteBuilder app) => app
@@ -12,7 +13,7 @@ public class GetBooking : IEndpoint
         int UserId,
         int EventId,
         int TicketCount,
-        User User,
+        IdentityUser User,
         Event Event,
         DateTime BookingDate
     );
@@ -20,7 +21,7 @@ public class GetBooking : IEndpoint
     private static Response Handle([AsParameters] Request request, ApplicationDBContext db)
     {
         var booking = db.Bookings.Find(request.Id);
-        var User = db.Users.Find(booking.UserId);
+        var User = db.Users.Find(booking.IdentityUserId);
         if (booking == null)
         {
             throw new Exception("Booking not found");
@@ -34,7 +35,7 @@ public class GetBooking : IEndpoint
 
         return new Response(
             Id: booking.Id,
-            UserId: booking.UserId,
+            UserId: booking.IdentityUserId,
             EventId: booking.EventId,
             TicketCount: booking.TicketCount,
             User: booking.User,
