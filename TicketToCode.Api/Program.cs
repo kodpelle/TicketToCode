@@ -24,17 +24,27 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 // Default mapping is /openapi/v1.json
 builder.Services.AddOpenApi();
- 
 
 
-// Add cookie authentication
-builder.Services.AddAuthentication()
-    .AddCookie(IdentityConstants.ApplicationScheme);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+})
+    .AddCookie(IdentityConstants.ApplicationScheme, options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.None; // Viktigt för WASM
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Kräver HTTPS
+    })
+    .AddBearerToken(IdentityConstants.BearerScheme); // Lägg till Bearer Token
+
 builder.Services.AddAuthorization();
+builder.Services.AddIdentityCore<IdentityUser>().AddEntityFrameworkStores<ApplicationDBContext>().AddApiEndpoints();
 
-builder.Services.AddIdentityCore<IdentityUser>()
-    .AddEntityFrameworkStores<ApplicationDBContext>()
-    .AddApiEndpoints();
+
 
 builder.Services.AddScoped<SignInManager<IdentityUser>>();
 var app = builder.Build();
