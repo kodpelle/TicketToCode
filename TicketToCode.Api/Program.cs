@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TicketToCode.Api.Endpoints;
 using TicketToCode.Core.Services;
 using TicketToCode.Core.Data;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,16 +30,15 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Add cookie authentication
-builder.Services.AddAuthentication("Cookies")
-    .AddCookie("Cookies", options =>
-    {
-        options.Cookie.Name = "auth";
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SameSite = SameSiteMode.Strict;
-    });
-
+builder.Services.AddAuthentication()
+    .AddCookie(IdentityConstants.ApplicationScheme);
 builder.Services.AddAuthorization();
 
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddEntityFrameworkStores<ApplicationDBContext>()
+    .AddApiEndpoints();
+
+builder.Services.AddScoped<SignInManager<IdentityUser>>();
 var app = builder.Build();
 
 app.UseCors("AllowBlazorClient");
@@ -59,8 +59,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map all endpoints
+
 app.MapEndpoints<Program>();
+app.MapIdentityApi<IdentityUser>();
 
 app.Run();
 

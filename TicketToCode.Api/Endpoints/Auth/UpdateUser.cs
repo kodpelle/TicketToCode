@@ -1,4 +1,4 @@
-﻿namespace TicketToCode.Api.Endpoints.Auth;
+﻿/*namespace TicketToCode.Api.Endpoints.Auth;
 
 public class UpdateUser : IEndpoint
 {
@@ -21,4 +21,4 @@ public class UpdateUser : IEndpoint
         string Username,
         string Password
     );
-}
+}*/
