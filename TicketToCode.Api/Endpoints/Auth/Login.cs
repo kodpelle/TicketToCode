@@ -1,4 +1,4 @@
-using TicketToCode.Core.Services;
+/*using TicketToCode.Core.Services;
 
 namespace TicketToCode.Api.Endpoints.Auth;
 
@@ -36,4 +36,4 @@ public class Login : IEndpoint
         var response = new Response(result.Username, result.Role);
         return TypedResults.Ok(response);
     }
-}  
+}  */

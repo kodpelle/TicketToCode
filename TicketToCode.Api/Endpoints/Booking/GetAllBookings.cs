@@ -9,7 +9,7 @@ public class GetAllBookings:IEndpoint
 
     // Request and Response types
     public record Response(
-          int Id,
+        int Id,
         int UserId,
         int EventId,
         int TicketCount,
@@ -24,7 +24,7 @@ public class GetAllBookings:IEndpoint
         {
             response.Add(new Response(
                 Id: item.Id,
-                UserId: item.UserId,
+                UserId: item.IdentityUserId,
                 EventId: item.EventId,
                 TicketCount: item.TicketCount,
                 BookingDate: item.BookingDate

@@ -1,5 +1,5 @@
 ﻿@page "/register"
-
+@using System.Text.Json
 @inject HttpClient HttpClient
 @inject NavigationManager Navigation
 
@@ -15,8 +15,8 @@
         <p class="register-subtitle">Join our community and start exploring amazing events</p>
 
         <div class="form-group">
-            <label class="form-label">Username</label>
-            <input @bind="username" class="form-control" placeholder="Enter your username" />
+            <label class="form-label">Email</label>
+            <input @bind="email" class="form-control" placeholder="Enter your email" />
         </div>
 
         <div class="form-group">
@@ -38,13 +38,13 @@
 </div>
 
 @code {
-    private string username = "";
+    private string email = "";
     private string password = "";
     private string responseMessage = "";
 
     private async Task RegisterUser()
     {
-        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
             responseMessage = "Username and password cannot be empty!";
             return;
@@ -53,11 +53,10 @@
         {
             var requestData = new
             {
-                Username = username,
+                Email = email,
                 Password = password
             };
-
-            var response = await HttpClient.PostAsJsonAsync("https://localhost:7206/auth/register", requestData);
+            var response = await HttpClient.PostAsJsonAsync("https://localhost:7206/register", requestData);
 
             if (response.IsSuccessStatusCode)
             {
@@ -66,8 +65,29 @@
             }
             else
             {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                responseMessage = $"Registration failed: {errorContent}";
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var errorMessages = ExtractErrorMessages(responseContent);
+                responseMessage = string.Join(" ", errorMessages);
+            }
+            List<string> ExtractErrorMessages(string json)
+            {
+                var errorList = new List<string>();
+
+                using (JsonDocument doc = JsonDocument.Parse(json))
+                {
+                    if (doc.RootElement.TryGetProperty("errors", out JsonElement errors))
+                    {
+                        foreach (var error in errors.EnumerateObject())
+                        {
+                            foreach (var message in error.Value.EnumerateArray()) // Hanterar arrayen av felmeddelanden
+                            {
+                                errorList.Add(message.GetString() ?? "Unknown error");
+                            }
+                        }
+                    }
+                }
+
+                return errorList;
             }
         }
         catch (Exception ex)

@@ -3,7 +3,7 @@
 public class GetUserBookings: IEndpoint
 {
     public static void MapEndpoint(IEndpointRouteBuilder app) => app
-        .MapGet("/bookings/{userId}/bookings", Handle)
+        .MapGet("/bookings/{IdentityUserId}/bookings", Handle)
         .WithSummary("Get booking");
     public record Request(int UserId);
     public record Response(
@@ -17,7 +17,7 @@ public class GetUserBookings: IEndpoint
     private static IEnumerable<Response> Handle([AsParameters] Request request, ApplicationDBContext db)
     {
         var response = new List<Response>();
-        var bookings = db.Bookings.Where(b=>b.UserId==request.UserId).ToList();
+        var bookings = db.Bookings.Where(b=>b.IdentityUserId==request.UserId).ToList();
         if (bookings == null|| !bookings.Any())
         {
             throw new Exception("Booking not found for this user");
@@ -32,7 +32,7 @@ public class GetUserBookings: IEndpoint
             }
             response.Add(new Response(
                 Id: booking.Id,
-                UserId: booking.UserId,
+                UserId: booking.IdentityUserId,
                 EventId: booking.EventId,
                 TicketCount: booking.TicketCount,
                 Event: booking.Event,

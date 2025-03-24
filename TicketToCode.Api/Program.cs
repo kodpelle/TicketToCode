@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TicketToCode.Api.Endpoints;
-using TicketToCode.Core.Services;
 using TicketToCode.Core.Data;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,21 +24,29 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 // Default mapping is /openapi/v1.json
 builder.Services.AddOpenApi();
- 
 
-builder.Services.AddScoped<IAuthService, AuthService>();
 
-// Add cookie authentication
-builder.Services.AddAuthentication("Cookies")
-    .AddCookie("Cookies", options =>
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+})
+    .AddCookie(IdentityConstants.ApplicationScheme, options =>
     {
-        options.Cookie.Name = "auth";
         options.Cookie.HttpOnly = true;
-        options.Cookie.SameSite = SameSiteMode.Strict;
-    });
+        options.Cookie.SameSite = SameSiteMode.None; // Viktigt för WASM
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Kräver HTTPS
+    })
+    .AddBearerToken(IdentityConstants.BearerScheme); // Lägg till Bearer Token
 
 builder.Services.AddAuthorization();
+builder.Services.AddIdentityCore<IdentityUser>().AddEntityFrameworkStores<ApplicationDBContext>().AddApiEndpoints();
 
+
+
+builder.Services.AddScoped<SignInManager<IdentityUser>>();
 var app = builder.Build();
 
 app.UseCors("AllowBlazorClient");
@@ -59,8 +67,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map all endpoints
+
 app.MapEndpoints<Program>();
+app.MapIdentityApi<IdentityUser>();
 
 app.Run();
 

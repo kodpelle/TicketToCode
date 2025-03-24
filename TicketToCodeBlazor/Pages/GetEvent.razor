@@ -50,7 +50,7 @@
             </div>
 
             <div class="action-buttons">
-                    <button @onclick="RegisterForEvent" class="btn-primary">Register Now</button>
+                   @* <button @onclick="RegisterForEvent" class="btn-primary">Register Now</button> *@
                 <button class="btn-secondary" @onclick="GoBack">Back to Events</button>
             </div>
         </div>
@@ -68,10 +68,11 @@
         eventDetail = await EventService.GetEventById(Id);
     }
 
-	private async Task RegisterForEvent()
+	/*private async Task RegisterForEvent()
 	{
         var Bookingid = await BookingService.CreateBooking(bookingDetail);
 	}
+    */
 
     private void GoBack()
     {
