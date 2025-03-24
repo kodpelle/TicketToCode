@@ -29,7 +29,7 @@ public class CreateBooking : IEndpoint
         var b = new Booking();
         // Map request to an event-object
 
-        b.UserId = request.UserId;
+        b.IdentityUserId = request.UserId;
         b.EventId = request.EventId;    
         b.TicketCount = request.TicketCount;
         b.BookingDate = request.BookingDate;

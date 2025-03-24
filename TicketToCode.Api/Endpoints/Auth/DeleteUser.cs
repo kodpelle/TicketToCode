@@ -1,4 +1,4 @@
-﻿using TicketToCode.Core.Services;
+﻿/*using TicketToCode.Core.Services;
 namespace TicketToCode.Api.Endpoints.Auth;
 
 public class DeleteUser : IEndpoint
@@ -20,3 +20,4 @@ public class DeleteUser : IEndpoint
     }
 
 }
+*/
