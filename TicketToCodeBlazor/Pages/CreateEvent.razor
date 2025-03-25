@@ -1,9 +1,10 @@
 ﻿@page "/create-event"
 @inject EventService EventService
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
 <AuthorizeView Roles="Admin">
     <Authorized>
-        Logged in as @context.User.Identity?.Name. <a href="logout"><span class="bi bi-door-closed-fill" aria-hidden="true" style="vertical-align:middle"></span> Logout</a>
+        <p>Logged in as @context.User.Identity?.Name. <button @onclick="Logout">Logout</button><span class="bi bi-door-closed-fill" aria-hidden="true" style="vertical-align:middle"></span> Logout</p>
         <div class="create-event-page">
             <button class="logo-button" @onclick="GoToHome">
                 <svg viewBox="0 0 24 24">
@@ -94,5 +95,17 @@
     private void GoToHome()
     {
         Navigation.NavigateTo("/");
+    }
+    private async Task Logout()
+    {
+        if (AuthStateProvider is CookieAuthenticationStateProvider cookieAuthProvider)
+        {
+            await cookieAuthProvider.LogoutAsync();
+            Navigation.NavigateTo("/", forceLoad: true);
+        }
+        else
+        {
+            Console.WriteLine("AuthProvider is not CookieAuthenticationStateProvider");
+        }
     }
 }

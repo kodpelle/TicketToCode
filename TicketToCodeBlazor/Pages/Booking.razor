@@ -1,50 +1,61 @@
 ﻿@page "/bookings"
 @inject BookingService BookingService
-@inject NavigationManager Navigation                    
+@inject NavigationManager Navigation
 @inject IJSRuntime JS
+@inject AuthenticationStateProvider AuthStateProvider
 
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <div>
+            <p>Logged in as @context.User.Identity?.Name. <button @onclick="Logout">Logout</button><span class="bi bi-door-closed-fill" aria-hidden="true" style="vertical-align:middle"></span> Logout</p>
 
-<h3>All Bookings</h3>
+            <h3>All Bookings</h3>
 
-@if (bookings == null)
-{
-    <p>Loading bookings...</p>
-}
-else if (bookings.Count == 0)
-{
-    <p>No bookings found.</p>
-}
-else
-{
-    <table class="table">
-        <thead> 
-            <tr>        
-                <th>Booking ID</th>
-                <th>User ID</th>
-                <th>Event ID</th>
-                <th>Ticket Count</th>
-                <th>Booking Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var booking in bookings)
+            @if (bookings == null)
             {
-                <tr>
-                    <td>@booking.Id</td>
-                    <td>@booking.UserId</td>
-                    <td>@booking.EventId</td>
-                    <td>@booking.TicketCount</td>
-                    <td>@booking.BookingDate</td>
-                    <td>
-                        <button class="btn btn-danger" @onclick="() => DeleteBooking(booking.Id)">Delete</button>
-
-                    </td>
-                </tr>
+                <p>Loading bookings...</p>
             }
-        </tbody>
-    </table>
-}
+            else if (bookings.Count == 0)
+            {
+                <p>No bookings found.</p>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>User ID</th>
+                            <th>Event ID</th>
+                            <th>Ticket Count</th>
+                            <th>Booking Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var booking in bookings)
+                        {
+                            <tr>
+                                <td>@booking.Id</td>
+                                <td>@booking.UserId</td>
+                                <td>@booking.EventId</td>
+                                <td>@booking.TicketCount</td>
+                                <td>@booking.BookingDate</td>
+                                <td>
+                                    <button class="btn btn-danger" @onclick="() => DeleteBooking(booking.Id)">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <p>Nothing to see here..</p>
+    </NotAuthorized>
+</AuthorizeView>
+
 @code {
     private List<BookingDto>? bookings;
 
@@ -72,4 +83,17 @@ else
             Console.WriteLine($"Delete failed for booking ID: {id}");
         }
     }
+    private async Task Logout()
+    {
+        if (AuthStateProvider is CookieAuthenticationStateProvider cookieAuthProvider)
+        {
+            await cookieAuthProvider.LogoutAsync();
+            Navigation.NavigateTo("/", forceLoad: true);
+        }
+        else
+        {
+            Console.WriteLine("AuthProvider is not CookieAuthenticationStateProvider");
+        }
+    }
+ 
 }
