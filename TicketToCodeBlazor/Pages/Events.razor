@@ -29,11 +29,15 @@
         <div class="search-box">
             <input type="text" class="search-input" placeholder="Search events..." />
         </div>
+        <AuthorizeView Roles="Admin">
+    <Authorized>
         <a href="/create-event" class="btn-create">
             <span>Create Event</span>
         </a>
+        </Authorized>
+        </AuthorizeView>
     </div>
-
+    
     @if (events == null)
     {
         <div class="events-loading">Loading events...</div>

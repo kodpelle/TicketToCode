@@ -36,9 +36,9 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(PolicyConstants.Policies.Admin, policy => policy.RequireRole("Admin"));
 });
-builder.Services.AddIdentityCore<IdentityUser>().AddEntityFrameworkStores<ApplicationDBContext>().AddApiEndpoints();
+builder.Services.AddIdentityCore<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>().AddApiEndpoints();
 
-
+builder.Services.AddScoped<Microsoft.AspNetCore.Identity.RoleManager<IdentityRole>>();
 
 
 builder.Services.AddScoped<SignInManager<IdentityUser>>();
@@ -104,6 +104,33 @@ app.MapGet("/roles", (ClaimsPrincipal user) =>
 
     return TypedResults.Json(roles);
 }).RequireAuthorization();
+/*
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var userManager = services.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<IdentityUser>>();
+    var roleManager = services.GetRequiredService<Microsoft.AspNetCore.Identity.RoleManager<IdentityRole>>();
+
+    // Se till att rollen finns
+    string roleName = "Admin";
+    if (!await roleManager.RoleExistsAsync(roleName))
+    {
+        await roleManager.CreateAsync(new IdentityRole(roleName));
+    }
+
+    // Hitta användaren
+    var user = await userManager.FindByEmailAsync("pelle@pelle.com");
+
+    if (user != null && !await userManager.IsInRoleAsync(user, roleName))
+    {
+        await userManager.AddToRoleAsync(user, roleName);
+        Console.WriteLine($"Användaren {user.Email} har nu rollen {roleName}.");
+    }
+    else
+    {
+        Console.WriteLine("Användaren hittades inte eller har redan rollen.");
+    }
+}*/
 
 
 app.Run();
