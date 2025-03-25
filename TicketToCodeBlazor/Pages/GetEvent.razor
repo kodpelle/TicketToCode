@@ -1,7 +1,9 @@
 ﻿@page "/event/{id:int}"
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject EventService EventService
 @inject NavigationManager Navigation
 @inject BookingService BookingService
+
 
 <div class="event-details-page">
     <button class="logo-button" @onclick="GoToHome">
@@ -50,7 +52,7 @@
             </div>
 
             <div class="action-buttons">
-                   @* <button @onclick="RegisterForEvent" class="btn-primary">Register Now</button> *@
+                <button @onclick="RegisterForEvent">Registrera för event</button>
                 <button class="btn-secondary" @onclick="GoBack">Back to Events</button>
             </div>
         </div>
@@ -61,18 +63,34 @@
     [Parameter]
     public int Id { get; set; }
     private EventDto? eventDetail;
-	private BookingDto? bookingDetail;
 
     protected override async Task OnInitializedAsync()
     {
         eventDetail = await EventService.GetEventById(Id);
     }
 
-	/*private async Task RegisterForEvent()
-	{
-        var Bookingid = await BookingService.CreateBooking(bookingDetail);
-	}
-    */
+    private async Task RegisterForEvent()
+    {
+        var booking = new BookingDto
+            {
+                UserId = 1, // hårdkodad användarID, hann inte fixa en riktig lösning. 
+                EventId = Id, // id från URL alltså event idt.
+                TicketCount = 1,
+                BookingDate = DateTime.Now
+            };
+        Console.WriteLine($"Creating booking for EventId: {Id}, UserId: 1");
+        var bookingId = await BookingService.CreateBookingAsync(booking);
+        if (bookingId.HasValue)
+        {
+            Console.WriteLine($"Successfully registered for event! Booking ID: {bookingId}");
+        }
+        else
+        {
+            Console.WriteLine("Failed to register for the event.");
+        }
+    }
+
+    
 
     private void GoBack()
     {

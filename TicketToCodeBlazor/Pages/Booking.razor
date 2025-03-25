@@ -30,12 +30,12 @@ else
             @foreach (var booking in bookings)
             {
                 <tr>
-                    <td>@booking.Id</td>
                     <td>@booking.UserId</td>
                     <td>@booking.EventId</td>
+                    <td>@booking.TicketCount</td>
                     <td>@booking.BookingDate</td>
                     <td>
-                        <button class="btn btn-danger" @onclick="() => DeleteBooking(booking.Id)">Delete</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteBooking(booking.EventId)">Delete</button>
 
                     </td>
                 </tr>

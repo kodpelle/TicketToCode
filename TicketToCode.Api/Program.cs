@@ -104,7 +104,8 @@ app.MapGet("/roles", (ClaimsPrincipal user) =>
 
     return TypedResults.Json(roles);
 }).RequireAuthorization();
-/*
+
+/* här kan ni byta ut email-adressen mot en som ni har i er databas för att lägga till en roll till en användare
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -119,7 +120,7 @@ using (var scope = app.Services.CreateScope())
     }
 
     // Hitta användaren
-    var user = await userManager.FindByEmailAsync("pelle@pelle.com");
+    var user = await userManager.FindByEmailAsync("exempel@exempel.com");
 
     if (user != null && !await userManager.IsInRoleAsync(user, roleName))
     {

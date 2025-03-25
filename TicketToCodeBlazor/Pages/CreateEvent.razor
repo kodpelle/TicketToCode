@@ -41,10 +41,15 @@
                         <input type="datetime-local" @bind="newEvent.End" class="form-control" />
                     </div>
 
+                    
+                    <div class="form-group">
+                        <label class="form-label">Max Attendees</label>
+                        <input type="number" @bind="newEvent.MaxAttendees" class="form-control" min="1" placeholder="Enter max attendees" />
+                    </div>
+
                     <div class="form-group full-width">
                         <label class="form-label">Description</label>
-                        <textarea @bind="newEvent.Description" class="form-control" placeholder="Describe your event"
-                                  rows="4"></textarea>
+                        <textarea @bind="newEvent.Description" class="form-control" placeholder="Describe your event" rows="4"></textarea>
                     </div>
                 </div>
 
@@ -58,13 +63,11 @@
                 </div>
             </div>
         </div>
-
     </Authorized>
     <NotAuthorized>
         <p>Nothing to see here..</p>
     </NotAuthorized>
 </AuthorizeView>
-
 
 @code {
     private EventDto newEvent = new EventDto();
