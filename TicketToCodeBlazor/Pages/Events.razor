@@ -9,6 +9,17 @@
         </svg>
     </button>
 
+    <AuthorizeView>
+        <Authorized>
+            Logged in as @context.User.Identity?.Name. <a href="logout"><span class="bi bi-door-closed-fill" aria-hidden="true" style="vertical-align:middle"></span> Logout</a>
+        </Authorized>
+        <NotAuthorized>
+            <a href="login"><span class="bi bi-door-open" aria-hidden="true" style="vertical-align:middle"></span> Login</a>
+            <a href="register"><span class="bi bi-pencil-square" aria-hidden="true" style="vertical-align:middle"></span> Register</a>
+        </NotAuthorized>
+    </AuthorizeView>
+
+
     <div class="events-header">
         <h1 class="events-title">Upcoming Events</h1>
         <p class="events-subtitle">Discover and join amazing events in your area</p>

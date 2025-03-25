@@ -47,10 +47,10 @@ else
 @code {
     private List<BookingDto>? bookings;
 
-    protected override async Task OnInitializedAsync()
+   /* protected override async Task OnInitializedAsync()
     {
         bookings = await BookingService.GetAllBookings();
-    }
+    }*/
     private async Task<bool> ConfirmDelete()
     {
         return await JS.InvokeAsync<bool>("confirm", "Are you sure you want to delete this booking?");

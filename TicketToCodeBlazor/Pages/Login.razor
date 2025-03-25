@@ -3,6 +3,7 @@
 @inject NavigationManager Navigation
 @using System.Text.Json
 @using System.Text
+@inject IAccountManagement Acct
 
 
 <div class="login-page">
@@ -43,6 +44,7 @@
     private string email = "";
     private string password = "";
     private string responseMessage = "";
+    private FormResult formResult = new();
 
     private async Task LoginUser()
     {
@@ -53,28 +55,17 @@
         }
         try
         {
-            var requestData = new
-            {
-                Email = email,
-                Password = password
-            };
+            formResult = await Acct.LoginAsync(email, password);
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7206/login")
-                {
-                    Content = JsonContent.Create(requestData)
-                };
-
-            request.Headers.Add("Accept", "application/json");
-
-            var response = await HttpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-
-            if (response.IsSuccessStatusCode)
+            if (formResult.Succeeded)
             {
                 Navigation.NavigateTo("/events");
             }
+
             else
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
+                //todo: handle errors
+                var responseContent = formResult.ErrorList[0];
                 responseMessage = $"Login failed: {responseContent}";
             }
         }

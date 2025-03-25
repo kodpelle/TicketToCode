@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using TicketToCode.Api.Endpoints;
-using TicketToCode.Core.Data;
+using TicketToCode.Core.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,22 +30,14 @@ builder.Services.AddOpenApi();
 
 
 
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication()
+    .AddCookie(IdentityConstants.ApplicationScheme);
+builder.Services.AddAuthorization(options =>
 {
-    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-})
-    .AddCookie(IdentityConstants.ApplicationScheme, options =>
-    {
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SameSite = SameSiteMode.None; // Viktigt för WASM
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Kräver HTTPS
-    })
-    .AddBearerToken(IdentityConstants.BearerScheme); // Lägg till Bearer Token
-
-builder.Services.AddAuthorization();
+    options.AddPolicy(PolicyConstants.Policies.Admin, policy => policy.RequireRole("Admin"));
+});
 builder.Services.AddIdentityCore<IdentityUser>().AddEntityFrameworkStores<ApplicationDBContext>().AddApiEndpoints();
+
 
 
 
@@ -67,9 +62,49 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
+// Endpoints 
 app.MapEndpoints<Program>();
 app.MapIdentityApi<IdentityUser>();
+
+// Temporary endpoints
+// Todo: Move to own files
+
+// For more information on the logout endpoint and antiforgery, see:
+// https://learn.microsoft.com/aspnet/core/blazor/security/webassembly/standalone-with-identity#antiforgery-support
+app.MapPost("/logout", async (SignInManager<IdentityUser> signInManager, [FromBody] object empty) =>
+{
+    if (empty is not null)
+    {
+        await signInManager.SignOutAsync();
+
+        return Results.Ok();
+    }
+
+    return Results.Unauthorized();
+}).RequireAuthorization();
+
+
+// provide an endpoint for user roles
+app.MapGet("/roles", (ClaimsPrincipal user) =>
+{
+    if (user.Identity is null || !user.Identity.IsAuthenticated)
+        return Results.Unauthorized();
+
+    var identity = (ClaimsIdentity)user.Identity;
+    var roles = identity.FindAll(identity.RoleClaimType)
+        .Select(c =>
+            new
+            {
+                c.Issuer,
+                c.OriginalIssuer,
+                c.Type,
+                c.Value,
+                c.ValueType
+            });
+
+    return TypedResults.Json(roles);
+}).RequireAuthorization();
+
 
 app.Run();
 
