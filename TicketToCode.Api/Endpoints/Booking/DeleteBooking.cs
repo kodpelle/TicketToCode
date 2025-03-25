@@ -10,11 +10,11 @@ public class DeleteBooking : IEndpoint
         var b = await db.Bookings.FindAsync(id);
         if (b == null)
         {
-            return TypedResults.NotFound("Event not found");
+            return TypedResults.NotFound("Booking not found");
         }
         db.Bookings.Remove(b);
         await db.SaveChangesAsync();
-        return TypedResults.NotFound();
+        return TypedResults.Ok();
     }
 
 }
