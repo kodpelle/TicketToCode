@@ -8,7 +8,7 @@
 <div class="event-details-page">
     <button class="logo-button" @onclick="GoToHome">
         <svg viewBox="0 0 24 24">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
         </svg>
     </button>
 
@@ -41,7 +41,7 @@
                     <div class="info-icon">👥</div>
                     <div class="info-content">
                         <h3>Capacity</h3>
-                        <p>@(eventDetail.MaxAttendees > 0 ? $"Limited to {eventDetail.MaxAttendees} attendees" : "Unlimited capacity")</p>
+                        <p>Limited to @eventDetail.MaxAttendees attendees</p>
                     </div>
                 </div>
             </div>
@@ -51,8 +51,15 @@
                 <p>@eventDetail.Description</p>
             </div>
 
+            @if (!string.IsNullOrEmpty(responseMessage))
+            {
+                <div class="response-message @(isSuccess ? "success" : "error")">
+                    @responseMessage
+                </div>
+            }
+
             <div class="action-buttons">
-                <button @onclick="RegisterForEvent">Registrera för event</button>
+                <button class="btn-primary" @onclick="RegisterForEvent">Book Ticket</button>
                 <button class="btn-secondary" @onclick="GoBack">Back to Events</button>
             </div>
         </div>
@@ -63,6 +70,8 @@
     [Parameter]
     public int Id { get; set; }
     private EventDto? eventDetail;
+    private string responseMessage = "";
+    private bool isSuccess = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,26 +80,35 @@
 
     private async Task RegisterForEvent()
     {
-        var booking = new BookingDto
+        try
+        {
+            var booking = new BookingDto
             {
-                UserId = 1, // hårdkodad användarID, hann inte fixa en riktig lösning. 
-                EventId = Id, // id från URL alltså event idt.
+                UserId = 1, // hårdkodad användarID, hann inte fixa en riktig lösning.
+                EventId = Id,
                 TicketCount = 1,
                 BookingDate = DateTime.Now
             };
-        Console.WriteLine($"Creating booking for EventId: {Id}, UserId: 1");
-        var bookingId = await BookingService.CreateBookingAsync(booking);
-        if (bookingId.HasValue)
-        {
-            Console.WriteLine($"Successfully registered for event! Booking ID: {bookingId}");
+
+            var bookingId = await BookingService.CreateBookingAsync(booking);
+            if (bookingId.HasValue)
+            {
+                responseMessage = "Successfully booked a ticket for this event!";
+                isSuccess = true;
+            }
+            else
+            {
+                responseMessage = "Failed to book a ticket. Please try again.";
+                isSuccess = false;
+            }
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine("Failed to register for the event.");
+            responseMessage = "An error occurred while booking. Please try again.";
+            isSuccess = false;
+            Console.WriteLine($"Error booking event: {ex.Message}");
         }
     }
-
-    
 
     private void GoBack()
     {
