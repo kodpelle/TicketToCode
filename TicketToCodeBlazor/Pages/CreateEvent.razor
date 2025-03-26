@@ -1,61 +1,89 @@
 ﻿@page "/create-event"
 @inject EventService EventService
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <p>Logged in as @context.User.Identity?.Name. <button @onclick="Logout">Logout</button><span class="bi bi-door-closed-fill" aria-hidden="true" style="vertical-align:middle"></span> Logout</p>
+        <div class="create-event-page">
+            <button class="logo-button" @onclick="GoToHome">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+            </button>
 
-<div class="create-event-page">
-    <button class="logo-button" @onclick="GoToHome">
-        <svg viewBox="0 0 24 24">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-        </svg>
-    </button>
+            <div class="create-event-container">
+                <h1 class="create-event-title">Create New Event</h1>
+                <p class="create-event-subtitle">Share your event with the community</p>
 
-    <div class="create-event-container">
-        <h1 class="create-event-title">Create New Event</h1>
-        <p class="create-event-subtitle">Share your event with the community</p>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Event Name</label>
+                        <input @bind="newEvent.Name" class="form-control" placeholder="Enter event name" />
+                    </div>
 
-        <div class="form-grid">
-            <div class="form-group">
-                <label class="form-label">Event Name</label>
-                <input @bind="newEvent.Name" class="form-control" placeholder="Enter event name" />
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">Event Type</label>
+                        <select @bind="newEvent.Type" class="form-control">
+                            @foreach (var type in Enum.GetValues(typeof(EventType)))
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        </select>
+                    </div>
 
-            <div class="form-group">
-                <label class="form-label">Event Type</label>
-                <select @bind="newEvent.Type" class="form-control">
-                    @foreach (var type in Enum.GetValues(typeof(EventType)))
-                    {
-                        <option value="@type">@type</option>
-                    }
-                </select>
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">Start Time</label>
+                        <input type="datetime-local" @bind="newEvent.Start" class="form-control" />
+                    </div>
 
-            <div class="form-group">
-                <label class="form-label">Start Time</label>
-                <input type="datetime-local" @bind="newEvent.Start" class="form-control" />
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">End Time</label>
+                        <input type="datetime-local" @bind="newEvent.End" class="form-control" />
+                    </div>
 
-            <div class="form-group">
-                <label class="form-label">End Time</label>
-                <input type="datetime-local" @bind="newEvent.End" class="form-control" />
-            </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Max Attendees</label>
+                        <input type="number" @bind="newEvent.MaxAttendees" class="form-control" min="1" placeholder="Enter max attendees" />
+                    </div>
 
-            <div class="form-group full-width">
-                <label class="form-label">Description</label>
-                <textarea @bind="newEvent.Description" class="form-control" placeholder="Describe your event"
-                    rows="4"></textarea>
+                    <div class="form-group full-width">
+                        <label class="form-label">Description</label>
+                        <textarea @bind="newEvent.Description" class="form-control" placeholder="Describe your event" rows="4"></textarea>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(responseMessage))
+                {
+                    <div class="validation-message">@responseMessage</div>
+                }
+                <div class="button-group">
+                    <button @onclick="CreateNewEvent" class="btn-primary">Create Event</button>
+                    <button @onclick="@GoToEvents" class="btn-secondary">Cancel</button>
+                </div>
             </div>
         </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="boddy">
+            <style>
+                .boddy {
+                    background-color: black;
+                    height: 100%;
+                    width: 100%;
+                }
 
-        @if (!string.IsNullOrEmpty(responseMessage))
-        {
-            <div class="validation-message">@responseMessage</div>
-        }
-        <div class="button-group">
-            <button @onclick="CreateNewEvent" class="btn-primary">Create Event</button>
-            <button @onclick="@GoToEvents" class="btn-secondary">Cancel</button>
+                .warning {
+                    font-size: 100px;
+                    text-align: center;
+                    color: red;
+                }
+            </style>
+            <p class="warning">Nothing to see here..</p>
         </div>
-    </div>
-</div>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     private EventDto newEvent = new EventDto();
@@ -82,5 +110,17 @@
     private void GoToHome()
     {
         Navigation.NavigateTo("/");
+    }
+    private async Task Logout()
+    {
+        if (AuthStateProvider is CookieAuthenticationStateProvider cookieAuthProvider)
+        {
+            await cookieAuthProvider.LogoutAsync();
+            Navigation.NavigateTo("/", forceLoad: true);
+        }
+        else
+        {
+            Console.WriteLine("AuthProvider is not CookieAuthenticationStateProvider");
+        }
     }
 }

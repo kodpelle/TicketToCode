@@ -14,22 +14,24 @@
         <h1 class="register-title">Create Account</h1>
         <p class="register-subtitle">Join our community and start exploring amazing events</p>
 
-        <div class="form-group">
-            <label class="form-label">Email</label>
-            <input @bind="email" class="form-control" placeholder="Enter your email" />
-        </div>
+        <form @onsubmit="RegisterUser">
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input @bind="email" class="form-control" placeholder="Enter your email" />
+            </div>
 
-        <div class="form-group">
-            <label class="form-label">Password</label>
-            <input @bind="password" type="password" class="form-control" placeholder="Enter your password" />
-        </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input @bind="password" type="password" class="form-control" placeholder="Enter your password" />
+            </div>
 
-        @if (!string.IsNullOrEmpty(responseMessage))
-        {
-            <div class="validation-message">@responseMessage</div>
-        }
+            @if (!string.IsNullOrEmpty(responseMessage))
+            {
+                <div class="validation-message">@responseMessage</div>
+            }
 
-        <button @onclick="RegisterUser" class="btn-primary">Register</button>
+            <button type="submit" class="btn-primary">Register</button>
+        </form>
 
         <div class="login-link">
             Already have an account? <a href="/login">Log in</a>

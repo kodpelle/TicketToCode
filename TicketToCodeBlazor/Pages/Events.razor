@@ -9,17 +9,6 @@
         </svg>
     </button>
 
-    <AuthorizeView>
-        <Authorized>
-            Logged in as @context.User.Identity?.Name. <a href="logout"><span class="bi bi-door-closed-fill" aria-hidden="true" style="vertical-align:middle"></span> Logout</a>
-        </Authorized>
-        <NotAuthorized>
-            <a href="login"><span class="bi bi-door-open" aria-hidden="true" style="vertical-align:middle"></span> Login</a>
-            <a href="register"><span class="bi bi-pencil-square" aria-hidden="true" style="vertical-align:middle"></span> Register</a>
-        </NotAuthorized>
-    </AuthorizeView>
-
-
     <div class="events-header">
         <h1 class="events-title">Upcoming Events</h1>
         <p class="events-subtitle">Discover and join amazing events in your area</p>
@@ -29,11 +18,18 @@
         <div class="search-box">
             <input type="text" class="search-input" placeholder="Search events..." />
         </div>
+        <AuthorizeView Roles="Admin">
+    <Authorized>
         <a href="/create-event" class="btn-create">
-            <span>Create Event</span>
-        </a>
+                    <span>Create Event</span>
+                </a>
+        <a href="/bookings" class="btn-create">
+                 <span>Manage bookings</span>
+                </a>
+        </Authorized>
+        </AuthorizeView>
     </div>
-
+    
     @if (events == null)
     {
         <div class="events-loading">Loading events...</div>
