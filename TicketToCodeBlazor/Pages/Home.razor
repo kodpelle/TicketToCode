@@ -1,47 +1,103 @@
 ﻿@page "/"
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+
 
 <PageTitle>TicketToCode - Your Event Management Platform</PageTitle>
 
-<section class="landing-page">
-    <div class="background-image"></div>
+<AuthorizeView>
+    <Authorized>
 
-    <div class="hero-section">
-        <h1 class="hero-title">Welcome to TicketToCode</h1>
-        <p class="hero-subtitle">Your one-stop platform for attending amazing events</p>
-
-        <div class="auth-buttons">
-            <button class="btn-primary" @onclick="GoToRegister">Register Now</button>
-            <button class="btn-outline" @onclick="GoToLogin">Log In</button>
+        <div class="user-info">
+            <span class="user-name">@context.User.Identity?.Name</span>
+            <button class="btn-logout" @onclick="Logout">
+                <span class="bi bi-door-closed-fill"></span>
+                Logout
+            </button>
         </div>
-    </div>
 
-    @*test data för styling purposes*@
-    <div class="featured-events">
-        <h2 class="section-title">Featured Events</h2>
-        <div class="events-grid">
-            <div class="event-card">
-                <h3 class="event-title">Tech Conference 2024</h3>
-                <p class="event-date">March 15, 2024</p>
-                <p class="event-description">Join us for the biggest tech conference of the year. Network with industry leaders and learn about the latest innovations.</p>
+
+        <section class="landing-page">
+            <div class="background-image"></div>
+
+            <div class="hero-section">
+                <h1 class="hero-title">Welcome to TicketToCode</h1>
+                <p class="hero-subtitle">Your one-stop platform for attending amazing events</p>
+                <div class="auth-buttons">
+                    <button class="btn-primary" @onclick="GoToEvents">Check out Events!</button>
+                </div>
+            </div>
+
+
+            @*test data för styling purposes*@
+            <div class="featured-events">
+                <h2 class="section-title">Featured Events</h2>
+                <div class="events-grid">
+                    <div class="event-card">
+                        <h3 class="event-title">Tech Conference 2024</h3>
+                        <p class="event-date">March 15, 2024</p>
+                        <p class="event-description">Join us for the biggest tech conference of the year. Network with industry leaders and learn about the latest innovations.</p>
+                    </div>
+
+                    @*test data för styling purposes*@
+                    <div class="event-card">
+                        <h3 class="event-title">Music Festival</h3>
+                        <p class="event-date">April 20, 2024</p>
+                        <p class="event-description">Experience an unforgettable weekend of live music, featuring top artists from around the world.</p>
+                    </div>
+
+                    @*test data för styling purposes*@
+                    <div class="event-card">
+                        <h3 class="event-title">Food & Wine Expo</h3>
+                        <p class="event-date">May 5, 2024</p>
+                        <p class="event-description">Indulge in culinary delights and wine tastings from renowned chefs and wineries.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </Authorized>
+    <NotAuthorized>
+        <section class="landing-page">
+            <div class="background-image"></div>
+
+            <div class="hero-section">
+                <h1 class="hero-title">Welcome to TicketToCode</h1>
+                <p class="hero-subtitle">Your one-stop platform for attending amazing events</p>
+                <div class="auth-buttons">
+                    <button class="btn-primary" @onclick="GoToRegister">Register Now</button>
+                    <button class="btn-outline" @onclick="GoToLogin">Log In</button>
+                </div>
+
             </div>
 
             @*test data för styling purposes*@
-            <div class="event-card">
-                <h3 class="event-title">Music Festival</h3>
-                <p class="event-date">April 20, 2024</p>
-                <p class="event-description">Experience an unforgettable weekend of live music, featuring top artists from around the world.</p>
-            </div>
+            <div class="featured-events">
+                <h2 class="section-title">Featured Events</h2>
+                <div class="events-grid">
+                    <div class="event-card">
+                        <h3 class="event-title">Tech Conference 2024</h3>
+                        <p class="event-date">March 15, 2024</p>
+                        <p class="event-description">Join us for the biggest tech conference of the year. Network with industry leaders and learn about the latest innovations.</p>
+                    </div>
 
-            @*test data för styling purposes*@
-            <div class="event-card">
-                <h3 class="event-title">Food & Wine Expo</h3>
-                <p class="event-date">May 5, 2024</p>
-                <p class="event-description">Indulge in culinary delights and wine tastings from renowned chefs and wineries.</p>
+                    @*test data för styling purposes*@
+                    <div class="event-card">
+                        <h3 class="event-title">Music Festival</h3>
+                        <p class="event-date">April 20, 2024</p>
+                        <p class="event-description">Experience an unforgettable weekend of live music, featuring top artists from around the world.</p>
+                    </div>
+
+                    @*test data för styling purposes*@
+                    <div class="event-card">
+                        <h3 class="event-title">Food & Wine Expo</h3>
+                        <p class="event-date">May 5, 2024</p>
+                        <p class="event-description">Indulge in culinary delights and wine tastings from renowned chefs and wineries.</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     private void GoToLogin()
@@ -51,5 +107,21 @@
     private void GoToRegister()
     {
         Navigation.NavigateTo("/register");
+    }
+    private void GoToEvents()
+    {
+        Navigation.NavigateTo("/events");
+    }
+    private async Task Logout()
+    {
+        if (AuthStateProvider is CookieAuthenticationStateProvider cookieAuthProvider)
+        {
+            await cookieAuthProvider.LogoutAsync();
+            Navigation.NavigateTo("/", forceLoad: true);
+        }
+        else
+        {
+            Console.WriteLine("AuthProvider is not CookieAuthenticationStateProvider");
+        }
     }
 }
