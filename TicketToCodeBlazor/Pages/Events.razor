@@ -1,6 +1,7 @@
 ﻿@page "/events"
 @inject EventService EventService
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
 
 <div class="events-page">
     <button class="logo-button" @onclick="GoToHome">

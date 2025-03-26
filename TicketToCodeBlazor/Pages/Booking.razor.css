@@ -55,6 +55,19 @@
 .table tr:last-child td {
     border-bottom: none;
 }
+.btn-secondary {
+    flex: 0 1 auto;
+    padding: 0.7rem 2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    background-color: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 150px;
+    margin-top: 10px;
+}
 
 .table tr:hover {
     background: rgba(255, 255, 255, 0.05);
