@@ -6,6 +6,9 @@
 
 <AuthorizeView Roles="Admin">
     <Authorized>
+        <p>
+            Logged in as @context.User.Identity?.Name. <button @onclick="Logout">Logout</button><span class="bi bi-door-closed-fill" aria-hidden="true" style="vertical-align:middle"></span> Logout
+        </p>
         <div class="bookings-page">
             <button class="logo-button" @onclick="GoToHome">
                 <svg viewBox="0 0 24 24">

@@ -73,6 +73,8 @@
     private string responseMessage = "";
     private bool isSuccess = false;
 
+
+
     protected override async Task OnInitializedAsync()
     {
         eventDetail = await EventService.GetEventById(Id);
