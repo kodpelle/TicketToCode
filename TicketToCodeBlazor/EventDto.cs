@@ -7,8 +7,8 @@
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public EventType Type { get; set; } = EventType.Other;
-        public DateTime Start{ get; set; }
-        public DateTime End { get; set; }
+        public DateTime Start{ get; set; } = DateTime.Now;
+        public DateTime End { get; set; } = DateTime.Now;
         public int MaxAttendees { get; set; }
 
     }

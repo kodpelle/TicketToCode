@@ -6,67 +6,83 @@
 
 <AuthorizeView Roles="Admin">
     <Authorized>
-        <div>
-            <p>Logged in as @context.User.Identity?.Name. <button @onclick="Logout">Logout</button><span class="bi bi-door-closed-fill" aria-hidden="true" style="vertical-align:middle"></span> Logout</p>
+        <div class="user-info">
+            <span class="user-name">@context.User.Identity?.Name</span>
+            <button class="btn-logout" @onclick="Logout">
+                <span class="bi bi-door-closed-fill"></span>
+                Logout
+            </button>
+        </div>
+        <div class="bookings-page">
+            <button class="logo-button" @onclick="GoToHome">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+            </button>
 
-            <h3>All Bookings</h3>
+            <div class="bookings-container">
+                <h1 class="bookings-title">All Bookings</h1>
 
-            @if (bookings == null)
-            {
-                <p>Loading bookings...</p>
-            }
-            else if (bookings.Count == 0)
-            {
-                <p>No bookings found.</p>
-            }
-            else
-            {
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Booking ID</th>
-                            <th>User ID</th>
-                            <th>Event ID</th>
-                            <th>Ticket Count</th>
-                            <th>Booking Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var booking in bookings)
-                        {
+                @if (bookings == null)
+                {
+                    <div class="loading-container">
+                        <div class="loading-spinner"></div>
+                        <p class="loading-message">Loading bookings...</p>
+                    </div>
+                }
+                else if (bookings.Count == 0)
+                {
+                    <p class="empty-message">No bookings found.</p>
+                }
+                else
+                {
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>@booking.Id</td>
-                                <td>@booking.UserId</td>
-                                <td>@booking.EventId</td>
-                                <td>@booking.TicketCount</td>
-                                <td>@booking.BookingDate</td>
-                                <td>
-                                    <button class="btn btn-danger" @onclick="() => DeleteBooking(booking.Id)">Delete</button>
-                                </td>
+                                <th>Booking ID</th>
+                                <th>User ID</th>
+                                <th>Event ID</th>
+                                <th>Ticket Count</th>
+                                <th>Booking Date</th>
+                                <th>Actions</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            }
+                        </thead>
+                        <tbody>
+                            @foreach (var booking in bookings)
+                            {
+                                <tr>
+                                    <td>@booking.Id</td>
+                                    <td>@booking.UserId</td>
+                                    <td>@booking.EventId</td>
+                                    <td>@booking.TicketCount</td>
+                                    <td>@booking.BookingDate</td>
+                                    <td>
+                                        <button class="btn-danger" @onclick="() => DeleteBooking(booking.Id)">Delete</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
         </div>
     </Authorized>
     <NotAuthorized>
         <div class="boddy">
-        <style>
-            .boddy{
-                background-color:black;
-                height: 100%;
-                width: 100%;
-                
-            }
-            .warning {
-                font-size: 100px;
-                text-align: center;
-                color: red;
-            }
-        </style>
-        <p class="warning">Nothing to see here..</p>
+            <style>
+                .boddy {
+                    background-color: black;
+                    height: 100%;
+                    width: 100%;
+                }
+
+                .warning {
+                    font-size: 100px;
+                    text-align: center;
+                    color: red;
+                }
+            </style>
+            <p class="warning">Nothing to see here..</p>
         </div>
     </NotAuthorized>
 </AuthorizeView>
@@ -98,6 +114,7 @@
             Console.WriteLine($"Delete failed for booking ID: {id}");
         }
     }
+
     private async Task Logout()
     {
         if (AuthStateProvider is CookieAuthenticationStateProvider cookieAuthProvider)
@@ -110,5 +127,9 @@
             Console.WriteLine("AuthProvider is not CookieAuthenticationStateProvider");
         }
     }
- 
+
+    private void GoToHome()
+    {
+        Navigation.NavigateTo("/");
+    }
 }
